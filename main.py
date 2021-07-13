@@ -2,21 +2,22 @@ import matplotlib.pyplot as plt
 
 from organism import Organism
 from population import Population
-    
-def main(n = 1000, difficulty = 0.9, mutation_chance = 0.2, checks_per_turn = 2, difficulty_increases = False, difficulty_increase = 0.05):
+
+
+def main(n=1000, difficulty=0.9, mutation_chance=0.2, checks_per_turn=2, difficulty_increases=False, difficulty_increase=0.05):
     # Declare initial variables:
-    population = Population([], mutation_chance, difficulty, checks_per_turn, n)
+    population = Population([], mutation_chance,
+                            difficulty, checks_per_turn, n)
     t = 100
 
     # Erase everything from database files distribution_before.txt and distribution_after.txt:
     erase = open("charts/distribution_before.txt", "w")
     erase.truncate(0)
-    erase.close
+    erase.close()
 
     erase = open("charts/distribution_after.txt", "w")
     erase.truncate(0)
     erase.close()
-
 
     for individual in population._members:
         f = open("charts/distribution_before.txt", "a")
@@ -48,26 +49,24 @@ def main(n = 1000, difficulty = 0.9, mutation_chance = 0.2, checks_per_turn = 2,
         if(difficulty_increases):
             difficulty += difficulty_increase
 
-
-
     for individual in population._members:
         f = open("charts/distribution_after.txt", "a+")
         f.write("%.4f\n" % individual._fitness)
         f.close()
 
-
-    plt.plot(t_elapsed, n_population_t, label = "fjöldi i ∈ P")
+    plt.plot(t_elapsed, n_population_t, label="fjöldi i ∈ P")
     plt.title("Fjöldi")
     plt.ylabel("nₚ")
     plt.xlabel("Δt")
     plt.show()
 
-    plt.plot(t_elapsed, mean_fitness_t, label = "ω avg.")
-    plt.plot(t_elapsed, difficulty_t, label = "φ")
+    plt.plot(t_elapsed, mean_fitness_t, label="ω avg.")
+    plt.plot(t_elapsed, difficulty_t, label="φ")
     plt.title("Meðalhæfni")
     plt.ylabel("ω")
     plt.xlabel("Δt")
     plt.legend()
     plt.show()
+
 
 main()
