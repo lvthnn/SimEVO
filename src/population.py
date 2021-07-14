@@ -1,47 +1,53 @@
 from organism import Organism
+
 import random
 import math
 
 
 class Population:
 
-    def __init__(self, members, mutation_chance, difficulty, c_per_t, n):
+    def __init__(self, members, init_genotype_distribution, difficulty, n):
         self._members = members
-        self._mutation_chance = mutation_chance
+        self._init_genotype_distribution = init_genotype_distribution
         self._difficulty = difficulty
-        self._c_per_t = c_per_t  # checks per unit of time, t
         self._n = n
 
         for i in range(n):
-            new_organism = Organism()
-            new_organism.determine_mutation(self._mutation_chance)
-            new_organism.calc_fitness()
-            new_organism._age = random.randint(0, new_organism.MAX_AGE / 2)
+            i = Organism()
+            i.determine_genotype(self._init_genotype_distribution)
+            i.calc_fitness()
+            i._age = random.randint(0, i.MAX_AGE / 2)
 
             print("O [GT] %s [PT] %s | Fitness: %.2f" % (
-                new_organism._genotype, new_organism._phenotype, new_organism._fitness))
-            self._members.append(new_organism)
+                i._genotype, i._phenotype, i._fitness))
 
     def __str__(self):
         result_str = ""
-        for organism in self._members:
+        for i in self._members:
             result_str += "O [GT] %s [PT] %s | Fitness: %.2f | Age: %s \n" % (
-                organism._genotype, organism._phenotype, organism._fitness, organism._age)
+                i._genotype, i._phenotype, i._fitness, i._age)
         return result_str
 
     def check_population(self, difficulty, percent):
-        n_selected = math.ceil(len(self._members) * percent)
-        count = 0
+        """ Expose a population to an environmental factor. Difficulty is an integer ranging from 0 and up
+        so that if an individual's fitness is lower than the difficulty, the individual dies and is removed 
+        from the population. Percent specifies what percentage of the population is exposed to the environmental
+        factor."""
+
+        # This variable isn't currently needed: n_selected = math.ceil(len(self._members) * percent)
+        # Neither is this one: count = 0
 
         if percent == 1.0:
-            for organism in self._members:
-                if not organism.survives_check(difficulty):
-                    self._members.remove(organism)
+            for i in self._members:
+                if not i.survives_check(difficulty):
+                    self._members.remove(i)
 
     def population_reproduction(self):
+        """ All individuals whose reproduction cooldown has expired reproduce. """
+
         offspring_produced = []
-        for organism in self._members:
-            offspring = organism.reproduce()
+        for i in self._members:
+            offspring = i.reproduce()
 
             if not offspring:
                 break
@@ -51,18 +57,22 @@ class Population:
             self._members.append(thing)
 
     def tick(self):
-        for organism in self._members:
-            organism._age += 1
-            organism._reproduction_timer += 1
-            if organism._age >= organism.MAX_AGE:
-                self._members.remove(organism)
+        """ Increase age of all organisms and decrease their reproduction cooldown. """
+
+        for i in self._members:
+            i._age += 1
+            i._reproduction_timer += 1
+
+            if i._age >= Organism.MAX_AGE:
+                self._members.remove(i)
 
     def calc_mean_fitness(self):
-        total_fitness = 0.0
+        """ Returns mean fitness of the population. """
 
-        for organism in self._members:
-            total_fitness += organism._fitness
+        n = 0.0
 
-        mean_fitness = total_fitness / len(self._members)
+        for i in self._members:
+            n += i._fitness
+
+        mean_fitness = n / len(self._members)
         return mean_fitness
-

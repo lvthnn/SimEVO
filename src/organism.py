@@ -4,7 +4,7 @@ import random
 class Organism:
     GT_DOMINANT = "F"
     REPRODUCTION_TIME = 2
-    MAX_AGE = 12
+    MAX_AGE = 4
 
     def __init__(self, genotype="f", phenotype="", fitness=0, age=0, reproduction_timer=2):
         self._genotype = genotype
@@ -13,12 +13,16 @@ class Organism:
         self._age = age
         self._reproduction_timer = reproduction_timer
 
-    def determine_mutation(self, chance):
+    def determine_genotype(self, chance):
+        """ Determines whether an individual carries the recessive or dominant genotype. Chance parameter
+        is passed in to allow for percentage of population to carry specific genotype."""
         if chance >= random.random():
             self._genotype = self.GT_DOMINANT
 
     def calc_fitness(self):
-        """ Calculate fitness based on phenotype."""
+        """ Only used for individuals making up initial population.
+        Calculates individual fitness based on genotype. Individuals
+        with dominant genotype acquire a boost to their fitness variable."""
         if self._genotype == self.GT_DOMINANT:
             self._phenotype = "Dominant"
 
@@ -38,9 +42,13 @@ class Organism:
         self._fitness = fitness
 
     def survives_check(self, difficulty):
+        """ Check whether an individual survives exposure to enviromental factor. Determined by
+        evaluating whether that individuals fitness value is greater than the numeric value of the
+        difficulty of the environmental factor."""
         return self._fitness >= difficulty
 
     def reproduce(self):
+        """An organism reproduces and passes on genes to offspring. TODO: Add chance of mutation and beneficial and deleterious mutations. """
         if self._reproduction_timer >= 2:
             self._reproduction_timer = 0
 
