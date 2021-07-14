@@ -12,14 +12,15 @@ class Population:
         self._difficulty = difficulty
         self._n = n
 
-        for i in range(n):
+        for _ in range(n):
             i = Organism()
             i.determine_genotype(self._init_genotype_distribution)
             i.calc_fitness()
-            i._age = random.randint(0, i.MAX_AGE / 2)
+            i._age = random.randint(0, Organism.MAX_AGE / 2)
 
-            print("O [GT] %s [PT] %s | Fitness: %.2f" % (
-                i._genotype, i._phenotype, i._fitness))
+            self._members.append(i)
+            # print("O [GT] %s [PT] %s | Fitness: %.2f" % (
+            #    i._genotype, i._phenotype, i._fitness))
 
     def __str__(self):
         result_str = ""
