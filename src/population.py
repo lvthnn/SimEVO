@@ -19,29 +19,22 @@ class Population:
             i._age = random.randint(0, Organism.MAX_AGE / 2)
 
             self._members.append(i)
-            # print("O [GT] %s [PT] %s | Fitness: %.2f" % (
-            #    i._genotype, i._phenotype, i._fitness))
 
     def __str__(self):
         result_str = ""
         for i in self._members:
-            result_str += "O [GT] %s [PT] %s | Fitness: %.2f | Age: %s \n" % (
+            result_str += "Organism [GT] %s [PT] %s | Fitness: %.2f | Age: %s \n" % (
                 i._genotype, i._phenotype, i._fitness, i._age)
         return result_str
 
-    def check_population(self, difficulty, percent):
+    def check_population(self, difficulty):
         """ Expose a population to an environmental factor. Difficulty is an integer ranging from 0 and up
         so that if an individual's fitness is lower than the difficulty, the individual dies and is removed 
-        from the population. Percent specifies what percentage of the population is exposed to the environmental
-        factor."""
+        from the population."""
 
-        # This variable isn't currently needed: n_selected = math.ceil(len(self._members) * percent)
-        # Neither is this one: count = 0
-
-        if percent == 1.0:
-            for i in self._members:
-                if not i.survives_check(difficulty):
-                    self._members.remove(i)
+        for i in self._members:
+            if not i.survives_check(difficulty):
+                self._members.remove(i)
 
     def population_reproduction(self):
         """ All individuals whose reproduction cooldown has expired reproduce. """
@@ -77,3 +70,19 @@ class Population:
 
         mean_fitness = n / len(self._members)
         return mean_fitness
+
+    def cycle(self, difficulty):
+        """ Equates to what happens in one time interval in the algorithm. """
+
+        # At the start of the turn, make everyone 1 year older. Those who are
+        # at the organism's max age die. Rest get their reproductive timer (cooldown)
+        # increased (shorter until reproduces next).
+        self.tick()
+
+        # All individuals within the environment are exposed to environmental factor
+        # which determines whether they live or die.
+        self.check_population(difficulty)
+
+        # All surviving individuals will attempt to reproduce, but only those who have
+        # finished reproduction cooldown can reproduce.
+        self.population_reproduction()

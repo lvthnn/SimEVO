@@ -1,36 +1,44 @@
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+import pandas as pd
 import time
+import csv
 
 from organism import Organism
 from population import Population
 
 
 def main(init_genotype_distribution=0.2, difficulty=0.5, n=100, difficulty_increases=False, difficulty_increase=0.05):
-    # Declare initial variables:
-    population = Population([], init_genotype_distribution,
-                            difficulty, n)
+    population = Population([], init_genotype_distribution, difficulty, n)
 
+    # time indexing count
     count = 0
-    t_elapsed = []
-    t_population_size = []
+
+    # csv data
+    data = {"time_elapsed": [], "population_size": [], "population_fitness": []}
+    df = pd.DataFrame(data)
+
+    # csv paths
+    path_plot = "csv/data_plot.csv"
 
     while True:
-        population.tick()
-        population.check_population(difficulty, 1.0)
-        population.population_reproduction()
+        # cycle the population
+        population.cycle(difficulty)
 
+        # calculate various population parameters
         population_size = len(population._members)
-        t_population_size.append(population_size)
-
         population_fitness = population.calc_mean_fitness()
 
-        t_elapsed.append(count)
+        next_row = {"time_elapsed": count, "population_size": population_size,
+                    "population_fitness": population_fitness}
+
+        print(df)
+        df = df.append(next_row, ignore_index=True)
         count += 1
 
-        print("time {time}: population size:  {pop_size}     average fitness:  {avg}    difficulty: {diff}".format(
-            time=count, pop_size=population_size, avg=population_fitness, diff=difficulty))
+        df.to_csv('csv/data_plot.csv', index=False)
 
-        time.sleep(0.5)
+        time.sleep(0.2)
 
 
 main()
