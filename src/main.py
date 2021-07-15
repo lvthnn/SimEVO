@@ -4,15 +4,10 @@ import csv
 
 from organism import Organism
 from population import Population
-from visualize import Visualize
 
 
 def main(init_genotype_distribution=0.2, difficulty=0.5, n=100, difficulty_increases=False, difficulty_increase=0.05):
     population = Population([], init_genotype_distribution, difficulty, n)
-
-    # visualize initialization
-    visualize = Visualize('csv/data_plot.csv')
-    visualize.read_df()
 
     # count time elapsed
     count = 0
@@ -38,8 +33,10 @@ def main(init_genotype_distribution=0.2, difficulty=0.5, n=100, difficulty_incre
         df.to_csv('csv/data_plot.csv', index=False)
         count += 1
 
-        # animate visuals
-        visualize.line_plot()
+        # print out pandas dataframe
+        # print(df)
+
+        time.sleep(0.1)
 
 
 main()
