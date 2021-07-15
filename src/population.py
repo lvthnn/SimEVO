@@ -27,14 +27,19 @@ class Population:
                 i._genotype, i._phenotype, i._fitness, i._age)
         return result_str
 
-    def check_population(self, difficulty):
+    def check_population(self, difficulty, percent):
         """ Expose a population to an environmental factor. Difficulty is an integer ranging from 0 and up
         so that if an individual's fitness is lower than the difficulty, the individual dies and is removed 
-        from the population."""
+        from the population. Percentage specifies how much of the population (in %) is exposed to the environmental
+        factor. Note that a single individual CAN be exposed to an environmetal factor several times."""
 
-        for i in self._members:
-            if not i.survives_check(difficulty):
-                self._members.remove(i)
+        if percent == 1.0:
+            for i in self._members:
+                if not i.survives_check(difficulty):
+                    self._members.remove(i)
+        else:
+            n_selected = math.floor(len(self._members) * percent)
+            for _ in r
 
     def population_reproduction(self):
         """ All individuals whose reproduction cooldown has expired reproduce. """
