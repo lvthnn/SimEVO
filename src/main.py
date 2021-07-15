@@ -1,25 +1,25 @@
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
 import pandas as pd
 import time
 import csv
 
 from organism import Organism
 from population import Population
+from visualize import Visualize
 
 
 def main(init_genotype_distribution=0.2, difficulty=0.5, n=100, difficulty_increases=False, difficulty_increase=0.05):
     population = Population([], init_genotype_distribution, difficulty, n)
 
-    # time indexing count
+    # visualize initialization
+    visualize = Visualize('csv/data_plot.csv')
+    visualize.read_df()
+
+    # count time elapsed
     count = 0
 
-    # csv data
+    # csv data structure and initialization
     data = {"time_elapsed": [], "population_size": [], "population_fitness": []}
     df = pd.DataFrame(data)
-
-    # csv paths
-    path_plot = "csv/data_plot.csv"
 
     while True:
         # cycle the population
@@ -32,13 +32,14 @@ def main(init_genotype_distribution=0.2, difficulty=0.5, n=100, difficulty_incre
         next_row = {"time_elapsed": count, "population_size": population_size,
                     "population_fitness": population_fitness}
 
-        print(df)
+        # write out calculated values to csv and
+        # increment time counter
         df = df.append(next_row, ignore_index=True)
+        df.to_csv('csv/data_plot.csv', index=False)
         count += 1
 
-        df.to_csv('csv/data_plot.csv', index=False)
-
-        time.sleep(0.2)
+        # animate visuals
+        visualize.line_plot()
 
 
 main()
