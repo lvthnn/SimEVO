@@ -1,8 +1,3 @@
 # Evolution
-This math is inline $`a^2+b^2=c^2`$.
 
-This is on a separate line
-
-```math
-a^2+b^2=c^2
-```
+Aims to simulate the behaviour of natural population exposed to some environmental factor. Each individual in a population is assigned a fitness value which their offspring inherit. For a more elaborate explanation, see jupyter notebook file.
