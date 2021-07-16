@@ -39,7 +39,10 @@ class Population:
                     self._members.remove(i)
         else:
             n_selected = math.floor(len(self._members) * percent)
-            for _ in r
+            for _ in range(n_selected):
+                i = random.choice(self._members)
+                if not i.survives_check(difficulty):
+                    self._members.remove(i)
 
     def population_reproduction(self):
         """ All individuals whose reproduction cooldown has expired reproduce. """
@@ -76,7 +79,7 @@ class Population:
         mean_fitness = n / len(self._members)
         return mean_fitness
 
-    def cycle(self, difficulty):
+    def cycle(self, difficulty, percent):
         """ Equates to what happens in one time interval in the algorithm. """
 
         # At the start of the turn, make everyone 1 year older. Those who are
@@ -86,7 +89,7 @@ class Population:
 
         # All individuals within the environment are exposed to environmental factor
         # which determines whether they live or die.
-        self.check_population(difficulty)
+        self.check_population(difficulty, percent)
 
         # All surviving individuals will attempt to reproduce, but only those who have
         # finished reproduction cooldown can reproduce.

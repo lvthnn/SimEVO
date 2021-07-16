@@ -13,7 +13,7 @@ def animate(i):
     plt.plot(time_elapsed, population_size)
 
 
-ani = FuncAnimation(plt.gcf(), animate, interval=250)
+ani = FuncAnimation(plt.gcf(), animate, interval=500)
 
 plt.tight_layout()
 plt.show()
