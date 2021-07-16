@@ -68,7 +68,7 @@ class Population:
             if i._age >= Organism.MAX_AGE:
                 self._members.remove(i)
 
-    def calc_mean_fitness(self):
+    def mean_fitness(self):
         """ Returns mean fitness of the population. """
 
         n = 0.0

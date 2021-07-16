@@ -26,7 +26,7 @@ def main(init_genotype_distribution=0.2, difficulty=1.2, n=100, percent=0.2, dif
 
         # calculate various population parameters
         population_size = len(population._members)
-        population_fitness = population.calc_mean_fitness()
+        population_fitness = population.mean_fitness()
 
         next_row = {"time_elapsed": count, "population_size": population_size,
                     "population_fitness": population_fitness}
@@ -36,11 +36,6 @@ def main(init_genotype_distribution=0.2, difficulty=1.2, n=100, percent=0.2, dif
         df = df.append(next_row, ignore_index=True)
         df.to_csv('csv/data_plot.csv', index=False)
         count += 1
-
-        # print out pandas dataframe
-        print(df)
-
-        time.sleep(1.0)
 
 
 main()
