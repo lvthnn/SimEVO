@@ -13,10 +13,6 @@ def main(init_genotype_distribution=0.2, difficulty=1.2, n=100, percent=0.2, dif
     count = 0
 
     # csv data structure and initialization
-    # while refining the algorithm, we will use termplotlib
-    # to facilitate visualization of data and stop outputting
-    # to csv
-
     data = {"time_elapsed": [], "population_size": [], "population_fitness": []}
     df = pd.DataFrame(data)
 
@@ -31,10 +27,17 @@ def main(init_genotype_distribution=0.2, difficulty=1.2, n=100, percent=0.2, dif
         next_row = {"time_elapsed": count, "population_size": population_size,
                     "population_fitness": population_fitness}
 
-        # write out calculated values to csv and
-        # increment time counter
+        # write out population size for line plot
         df = df.append(next_row, ignore_index=True)
-        df.to_csv('csv/data_plot.csv', index=False)
+        df.to_csv('../csv/population_data.csv', index=False)
+
+        # write out fitness distribution for kde plot
+        with open('../csv/fitness_distribution.csv', 'w') as output:
+            csv_write = csv.writer(output)
+            for i in population._members:
+                next_row = {i._fitness}
+                csv_write.writerow(next_row)
+
         count += 1
 
 
