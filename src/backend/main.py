@@ -1,5 +1,4 @@
 import pandas as pd
-import time
 import csv
 
 from organism import Organism
@@ -9,13 +8,17 @@ from population import Population
 def main(init_genotype_distribution=0.2, difficulty=1.2, n=100, percent=0.2, difficulty_increases=False, difficulty_increase=0.05):
     population = Population([], init_genotype_distribution, difficulty, n)
 
-    # count time elapsed
-    count = 0
+    # prepare line plot
+    popdata = open('../csv/population_data.csv', 'w', newline='')
 
-    # csv data structure and initialization
-    population_data = {"time_elapsed": [],
-                       "population_size": [], "population_fitness": []}
-    df_population = pd.DataFrame(population_data)
+    fieldnames = ['time_elapsed', 'population_size', 'average_fitness']
+    init_writer = csv.DictWriter(popdata, fieldnames=fieldnames)
+    init_writer.writeheader()
+
+    popdata.close()
+
+    # count time elapsed
+    time = 0
 
     while True:
         # cycle the population
@@ -23,30 +26,35 @@ def main(init_genotype_distribution=0.2, difficulty=1.2, n=100, percent=0.2, dif
 
         # calculate various population parameters
         population_size = len(population._members)
-        population_avg_fitness = population.mean_fitness()
+        average_fitness = population.mean_fitness()
 
-        population_data_next = {"time_elapsed": count, "population_size": population_size,
-                                "population_avg_fitness": population_avg_fitness}
+        # dictionary structures for line plot csv
+        next_row = {'time_elapsed': time, 'population_size': population_size,
+                    'average_fitness': average_fitness}
 
-        population_fitness = []
+        with open('../csv/population_data.csv', 'a', newline='') as output:
+            writer = csv.DictWriter(
+                output, fieldnames=fieldnames, delimiter=',')
+            writer.writerow(next_row)
+        output.close()
+
+        # write out for fitness kde
+        fitness_data = [{'fitness': None}]
+
         for i in population._members:
-            population_fitness.append(i._fitness)
+            next = {'fitness': i._fitness}
+            fitness_data.append(next)
 
-        df_fitness = pd.DataFrame(population_fitness, columns=['fitness'])
+        fitness_dataframe = pd.DataFrame(fitness_data)
+        fitness_dataframe = fitness_dataframe.iloc[1:, :]
 
-        # write out population size for line plot
-        with open('../csv/population_data.csv', 'w') as output1:
-            df_population = df_population.append(
-                population_data_next, ignore_index=True)
-            df_population.to_csv(output1, index=False, sep=',')
-        output1.close()
+        with open('../csv/fitness_distribution.csv', 'w', newline='') as output:
+            fitness_dataframe.to_csv(
+                output, sep=',', index=False, line_terminator='\n', encoding='utf-8', header=False)
+        output.close()
 
-        # write out fitness distribution for kde plot
-        with open('../csv/fitness_distribution.csv', 'w') as output2:
-            df_fitness.to_csv(output2, index=False, sep=',')
-        output2.close()
-
-        count += 1
+        # increment time
+        time += 1
 
 
 main()
