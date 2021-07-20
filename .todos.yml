@@ -1,0 +1,18 @@
+todos:
+- title: Finish evolution class
+  description: Create new evolution class which server as interface between live plotting
+    script and algorithm.
+  marked: true
+  id: 0
+- title: Implement live plotting to visualize simulation progression
+  description: ""
+  marked: false
+  id: 0
+- title: Add difficulty increase option with configurable difficulty increment
+  description: ""
+  marked: false
+  id: 0
+- title: Reduce num params for evolution class -- instantiate in liveplot
+  description: ""
+  marked: false
+  id: 0
