@@ -8,10 +8,26 @@ import matplotlib.animation as animation
 import seaborn as sns
 import pandas as pd
 import numpy as np
+import math
 
 
 def main():
-    GLOBAL_DIFFICULTY_PARAM = 0.55
+    DIFFICULTY = float(input('(1/4) [DBL] Enter difficulty : '))
+    print('')
+    DIFFICULTY_INCREASE = input('(2/4) [Y/N] Increase difficulty? : ')
+    DIFFICULTY_INCREMENT = None
+
+    print('')
+    if DIFFICULTY_INCREASE.upper() == 'Y':
+        DIFFICULTY_INCREMENT = float(input(
+            '            Difficulty increment : '))
+        print('')
+
+    POPULATION_SIZE_INIT = int(input(
+        '(3/4) [INT] Enter initial population size : '))
+
+    print('')
+    MUTATION_RATIO = float(input('(4/4) Enter mutation ratio : '))
 
     def animate(i):
         results = algorithm.interval_cycle()
@@ -33,25 +49,28 @@ def main():
         ax1.plot(t_axis, size)
         ax1.set_xlabel('Time elapsed')
         ax1.set_ylabel('Population size')
+        ax1.tick_params(top=False, right=False)
 
         ax2.plot(t_axis, fitness)
         ax2.set_xlabel('Time elapsed')
         ax2.set_ylabel('Fitness value')
+        ax2.tick_params(top=False, right=False)
 
         if t == 0:
-            sns.kdeplot(density, ax=ax3)
+            sns.displot(density, ax=ax3)
         else:
             sns.kdeplot(density, ax=ax3)
-            sns.kdeplot(density_initial, ax=ax3, color='orange')
+            sns.kdeplot(density_initial, ax=ax3,
+                        color='orange')
         ax3.set_xlabel('Fitness value')
-        ax3.set_ylabel('Density estimate')
-
-        plt.suptitle('Evolutionary Algorithm')
+        ax3.set_ylabel('Density')
+        ax3.set(yticklabels=[])
+        ax3.tick_params(left=False, top=False, right=False)
 
     # global
     fig = plt.figure(1)
     gridspec = gs.GridSpec(nrows=2, ncols=2)
-    plt.style.use('seaborn-dark')
+    # plt.style.use('seaborn-dark')
 
     t = 0
     t_axis = []
@@ -60,9 +79,10 @@ def main():
     density = []
     density_initial = []
 
-    population = Population([], 0.1, GLOBAL_DIFFICULTY_PARAM, 1000)
+    population = Population(
+        [], MUTATION_RATIO, DIFFICULTY, POPULATION_SIZE_INIT)
     algorithm = Evolution(
-        population, GLOBAL_DIFFICULTY_PARAM, False, None, 0.2)
+        population, DIFFICULTY, False, DIFFICULTY_INCREMENT, 0.1)
 
     # set up plots
     ax1 = plt.subplot(gridspec[0, 0:2])
@@ -75,7 +95,8 @@ def main():
 
     ax3 = plt.subplot(gridspec[1, 1])
     ax3.set_xlabel('Fitness value')
-    ax3.set_ylabel('Density estimate')
+    ax3.set_ylabel(None)
+    ax3.set(yticklabels=[])
 
     anim = animation.FuncAnimation(fig, animate, interval=250)
     plt.show()

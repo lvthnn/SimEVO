@@ -1,18 +1,29 @@
 todos:
-- title: Finish evolution class
-  description: Create new evolution class which server as interface between live plotting
-    script and algorithm.
-  marked: true
-  id: 0
-- title: Implement live plotting to visualize simulation progression
-  description: ""
-  marked: false
-  id: 0
 - title: Add difficulty increase option with configurable difficulty increment
   description: ""
   marked: false
   id: 0
-- title: Reduce num params for evolution class -- instantiate in liveplot
+- title: Create module to perform tests on mean fitness and parameter corr.
+  description: ""
+  marked: false
+  id: 0
+- title: Run tests on evolution algorithm
+  description: ""
+  marked: false
+  id: 0
+- title: Write paper
+  description: ""
+  marked: false
+  id: 0
+- title: Calculate phenotypic ratio (% m+/m)
+  description: ""
+  marked: false
+  id: 0
+- title: Run tests on corr. of b/d ratio and population equilibrium
+  description: ""
+  marked: false
+  id: 0
+- title: Add npyscreen form to initialize simulation?
   description: ""
   marked: false
   id: 0
