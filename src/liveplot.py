@@ -99,6 +99,7 @@ def main():
     ax3.set(yticklabels=[])
 
     anim = animation.FuncAnimation(fig, animate, interval=250)
+    plt.tight_layout()
     plt.show()
 
 
