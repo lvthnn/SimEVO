@@ -15,8 +15,7 @@ class Evolution:
         difficulty = self._difficulty
         percent = self._check_percent
 
-        # Expose part of population to environmental
-        # factor >:-)
+        # Expose part of population to EF
         population.cycle(difficulty, percent)
 
         # Calculate population variables

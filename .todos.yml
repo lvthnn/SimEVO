@@ -11,10 +11,6 @@ todos:
   description: ""
   marked: false
   id: 0
-- title: Write paper
-  description: ""
-  marked: false
-  id: 0
 - title: Calculate phenotypic ratio (% m+/m)
   description: ""
   marked: false
@@ -25,5 +21,10 @@ todos:
   id: 0
 - title: Add npyscreen form to initialize simulation?
   description: ""
+  marked: false
+  id: 0
+- title: Refactor evolution class to prompt for simulation parameters
+  description: Allows for different uses of algorithm (visualization, simulation,
+    etc.)
   marked: false
   id: 0
