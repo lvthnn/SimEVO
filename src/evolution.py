@@ -23,9 +23,14 @@ class Evolution:
         fitness = population.mean_fitness()
         density = []
 
+        # Create dictionary and return to logger / grapher
         for i in population._members:
             density.append(i._fitness)
 
         results = {'size': size, 'fitness': fitness, 'density': density}
+
+        # If increase_difficulty == True: increase difficulty.
+        if self._difficulty_increase:
+            self._difficulty += self._difficulty_increment
 
         return results

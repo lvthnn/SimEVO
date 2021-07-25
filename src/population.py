@@ -17,7 +17,9 @@ class Population:
             i.determine_genotype(self._init_genotype_distribution)
             i.calc_fitness()
             i._age = random.randint(0, Organism.MAX_AGE / 2)
-
+            i._reproduction_timer = random.randrange(
+                0, i.REPRODUCTION_TIME + 1)
+            print(i._reproduction_timer)
             self._members.append(i)
 
     def __str__(self):

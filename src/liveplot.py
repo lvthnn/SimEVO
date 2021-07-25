@@ -71,7 +71,7 @@ def main():
         ax3.set(yticklabels=[])
         ax3.tick_params(left=False, top=False, right=False)
         ax3.legend(loc='upper right')
-        ax3.grid()
+
     # global
     fig = plt.figure(1)
     gridspec = gs.GridSpec(nrows=2, ncols=2)
@@ -87,7 +87,7 @@ def main():
     population = Population(
         [], MUTATION_RATIO, DIFFICULTY, POPULATION_SIZE_INIT)
     algorithm = Evolution(
-        population, DIFFICULTY, False, DIFFICULTY_INCREMENT, 0.35)
+        population, DIFFICULTY, DIFFICULTY_INCREASE, DIFFICULTY_INCREMENT, 0.5)
 
     # set up plots
     ax1 = plt.subplot(gridspec[0, 0:2])
