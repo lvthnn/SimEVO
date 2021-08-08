@@ -1,5 +1,4 @@
 from population import Population
-from organism import Organism
 
 
 class Evolution:
