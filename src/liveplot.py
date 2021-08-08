@@ -103,10 +103,9 @@ def main():
     ax3.set_ylabel(None)
     ax3.set(yticklabels=[])
 
-    anim = animation.FuncAnimation(fig, animate, interval=250)
+    anim = animation.FuncAnimation(fig, animate, interval=1)
     plt.tight_layout()
     plt.show()
-    print('Exited graphing...')
 
 
 main()

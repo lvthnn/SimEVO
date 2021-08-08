@@ -3,7 +3,7 @@ import random
 
 class Organism:
     GT_DOMINANT = "F"
-    REPRODUCTION_TIME = 6
+    REPRODUCTION_TIME = 5
     MAX_AGE = 18
 
     def __init__(self, genotype="f", phenotype="", fitness=0, age=0, reproduction_timer=6):
