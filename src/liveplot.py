@@ -12,7 +12,7 @@ import math
 
 
 def main():
-    print('| EVOLUTION ALGORITHM |--------------------------------')
+    print('\n| EVOLUTION ALGORITHM |\n')
     DIFFICULTY = float(input('[1/4] (DBL) Enter difficulty : '))
     print('')
 
@@ -87,7 +87,7 @@ def main():
     population = Population(
         [], MUTATION_RATIO, DIFFICULTY, POPULATION_SIZE_INIT)
     algorithm = Evolution(
-        population, DIFFICULTY, DIFFICULTY_INCREASE, DIFFICULTY_INCREMENT, 0.5)
+        population, DIFFICULTY, DIFFICULTY_INCREASE, DIFFICULTY_INCREMENT, 0.35)
 
     # set up plots
     ax1 = plt.subplot(gridspec[0, 0:2])
