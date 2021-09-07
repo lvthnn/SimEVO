@@ -14,21 +14,24 @@ class Evolution:
         difficulty = self._difficulty
         percent = self._check_percent
 
-        # Expose part of population to EF
+        # Expose part of population to E
         population.cycle(difficulty, percent)
 
-        # Calculate population variables
+        # Population variables
         size = len(population._members)
         fitness = population.mean_fitness()
         density = []
 
-        # Create dictionary and return to logger / grapher
+        # Dictionary for calculating finess density
+        # estimate
         for i in population._members:
             density.append(i._fitness)
 
         results = {'size': size, 'fitness': fitness, 'density': density}
 
         # If increase_difficulty == True: increase difficulty.
+        print_str = 'Current difficulty: {difficulty}, increment per turn: {increment}'
+        print(print_str.format(difficulty = self._difficulty, increment = self._difficulty_increment))
         if self._difficulty_increase:
             self._difficulty += self._difficulty_increment
 

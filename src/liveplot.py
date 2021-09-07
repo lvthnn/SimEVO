@@ -10,7 +10,6 @@ import pandas as pd
 import numpy as np
 import math
 
-
 def main():
     print('\n| EVOLUTION ALGORITHM |\n')
     DIFFICULTY = float(input('[1/4] (DBL) Enter difficulty : '))
@@ -21,8 +20,7 @@ def main():
     print('')
 
     if DIFFICULTY_INCREASE.upper() == 'Y':
-        DIFFICULTY_INCREMENT = float(input(
-            '            Difficulty increment (DBL) : '))
+        DIFFICULTY_INCREMENT = float(input('            Difficulty increment (DBL) : '))
         print('')
 
     POPULATION_SIZE_INIT = int(input(
@@ -60,17 +58,10 @@ def main():
         ax2.tick_params(top=False, right=False)
         ax2.grid()
 
-        if t == 0:
-            sns.kdeplot(density, ax=ax3, label='current')
-        else:
-            sns.kdeplot(density, ax=ax3, label='current')
-            sns.kdeplot(density_initial, ax=ax3,
-                        color='orange', label='initial')
+        sns.kdeplot(density, ax=ax3)
         ax3.set_xlabel('Fitness value')
         ax3.set_ylabel('Density')
-        ax3.set(yticklabels=[])
         ax3.tick_params(left=False, top=False, right=False)
-        ax3.legend(loc='upper right')
 
     # global
     fig = plt.figure(1)
@@ -84,10 +75,8 @@ def main():
     density = []
     density_initial = []
 
-    population = Population(
-        [], MUTATION_RATIO, DIFFICULTY, POPULATION_SIZE_INIT)
-    algorithm = Evolution(
-        population, DIFFICULTY, DIFFICULTY_INCREASE, DIFFICULTY_INCREMENT, 0.35)
+    population = Population([], MUTATION_RATIO, DIFFICULTY, POPULATION_SIZE_INIT)
+    algorithm = Evolution(population, DIFFICULTY, DIFFICULTY_INCREASE, DIFFICULTY_INCREMENT, 0.15)
 
     # set up plots
     ax1 = plt.subplot(gridspec[0, 0:2])
@@ -101,11 +90,11 @@ def main():
     ax3 = plt.subplot(gridspec[1, 1])
     ax3.set_xlabel('Fitness value')
     ax3.set_ylabel(None)
+    ax3.ytickparams = []
     ax3.set(yticklabels=[])
 
     anim = animation.FuncAnimation(fig, animate, interval=1)
     plt.tight_layout()
     plt.show()
-
 
 main()
