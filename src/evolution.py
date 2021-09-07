@@ -30,8 +30,6 @@ class Evolution:
         results = {'size': size, 'fitness': fitness, 'density': density}
 
         # If increase_difficulty == True: increase difficulty.
-        print_str = 'Current difficulty: {difficulty}, increment per turn: {increment}'
-        print(print_str.format(difficulty = self._difficulty, increment = self._difficulty_increment))
         if self._difficulty_increase:
             self._difficulty += self._difficulty_increment
 
