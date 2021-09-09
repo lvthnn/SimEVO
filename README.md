@@ -4,4 +4,8 @@ This model aims to simulate changes in trait value distribution as a result of n
 It was programmed using Python v3.9 and utilizes matplotlib and seaborn for data visualization.
 By devising simple algorithmic "rules", emergent properties such as beneficial selection 
 
+## Table of contents
+* [General info](#general-info)
+
+# General info
 ## Algorithm structure and function
