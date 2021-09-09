@@ -6,14 +6,10 @@ By devising simple algorithmic "rules", emergent properties such as beneficial s
 
 ## Table of contents
 * [General info](#general-info)
-  * [Theoretical basis](#theoretical-basis)
-  * [Model design](#model-design)
-  * [Visualizing data](#visualizing-data)
+  * [Theoretical basis](#theoretical-basis)´
+* [Model design](#model-design)
 
 # General info
 ## Theoretical basis
 Yo
-## Model design
-Yo
-## Visualizing data
-Yo
+# Model design
