@@ -6,6 +6,7 @@ By devising simple algorithmic "rules", emergent properties such as beneficial s
 
 ## Table of contents
 * [General info](#general-info)
+* * [Algorithm structure and function](#algorithm-structure-and-function)
 
 # General info
 ## Algorithm structure and function
