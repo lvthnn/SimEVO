@@ -12,22 +12,25 @@ import math
 
 def main():
     print('\n| EVOLUTION ALGORITHM |\n')
-    DIFFICULTY = float(input('[1/4] (DBL) Enter difficulty : '))
+    DIFFICULTY = float(input('[1/4] (DBL) Enter difficulty             : '))
     print('')
 
-    PROMPT_DIFFICULTY_INCREASE = input('[2/4] (Y/N) Increase difficulty? : ')
+    PROMPT_DIFFICULTY_INCREASE = input('[2/4] (Y/N) Increase difficulty?         : ')
     DIFFICULTY_INCREASE = False
     DIFFICULTY_INCREMENT = 0
-    
+
     if PROMPT_DIFFICULTY_INCREASE.upper() == 'Y':
         DIFFICULTY_INCREASE = True
-        DIFFICULTY_INCREMENT = float(input('            Difficulty increment (DBL) : '))
+        DIFFICULTY_INCREMENT = float(input('      (DBL) Difficulty increment         : '))
     print('')
 
-    POPULATION_SIZE_INIT = int(input('[3/4] (INT) Enter initial population size : '))
+    POPULATION_SIZE_INIT = int(input('[3/4] (INT) Initial population size      : '))
     print('')
 
-    MUTATION_RATIO = float(input('[4/4] Enter mutation ratio : '))
+    MUTATION_RATIO = float(input('[4/4] (DBL) Enter mutation ratio         : '))
+    print('')
+
+    SELECTIVE_RATIO = float(input('[5/5] (DBL) Input selective ratio        : '))
 
     def animate(i):
         results = algorithm.interval_cycle()
@@ -43,7 +46,7 @@ def main():
         t += 1
 
         ax1.cla()
-        ax2.cla()   
+        ax2.cla()
         ax3.cla()
 
         ax1.plot(t_axis, size)
@@ -77,7 +80,7 @@ def main():
     density_initial = []
 
     population = Population([], MUTATION_RATIO, DIFFICULTY, POPULATION_SIZE_INIT)
-    algorithm = Evolution(population, DIFFICULTY, PROMPT_DIFFICULTY_INCREASE, DIFFICULTY_INCREMENT, 0.15)
+    algorithm = Evolution(population, DIFFICULTY, PROMPT_DIFFICULTY_INCREASE, DIFFICULTY_INCREMENT, SELECTIVE_RATIO)
 
     # set up plots
     ax1 = plt.subplot(gridspec[0, 0:2])
