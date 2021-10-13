@@ -6,9 +6,6 @@ import matplotlib.gridspec as gs
 import matplotlib.animation as animation
 
 import seaborn as sns
-import pandas as pd
-import numpy as np
-import math
 
 def main():
     print('\n| EVOLUTION ALGORITHM |\n')

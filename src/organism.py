@@ -4,9 +4,10 @@ import random
 class Organism:
     GT_DOMINANT = "F"
     REPRODUCTION_TIME = 2
+    MUTATION_CHANCE = 0.2
     MAX_AGE = 6
 
-    def __init__(self, genotype="f", phenotype="", fitness=0, age=0, reproduction_timer=6):
+    def __init__(self, genotype="f", phenotype="", fitness=0, age=0, reproduction_timer = 6):
         self._genotype = genotype
         self._phenotype = phenotype
         self._fitness = fitness
@@ -14,8 +15,9 @@ class Organism:
         self._reproduction_timer = reproduction_timer
 
     def introduce_mutants(self, chance):
-        """ Determines whether an individual carries the recessive or dominant genotype. Chance parameter
-        is passed in to allow for percentage of population to carry specific genotype."""
+        """ Determines whether an individual carries the recessive or dominant genotype.
+        Chance parameter is passed in to allow for percentage of population to carry specific 
+        genotype."""
         if chance >= random.random():
             self._genotype = self.GT_DOMINANT
 
@@ -42,17 +44,17 @@ class Organism:
         self._fitness = fitness
 
     def survives_check(self, difficulty):
-        """ Check whether an individual survives exposure to enviromental factor. Determined by
-        evaluating whether that individuals fitness value is greater than the numeric value of the
-        difficulty of the environmental factor."""
+        """ Check whether an individual survives exposure to enviromental factor. 
+        Determined by evaluating whether that individuals fitness value is greater 
+        than the numeric value of the difficulty of the environmental factor."""
         return self._fitness >= difficulty
 
     def reproduce(self):
-        """An organism reproduces and passes on genes to offspring. TODO: Add chance of mutation and beneficial and deleterious mutations. """
+        """An organism reproduces and passes on genes to offspring. """
         if self._reproduction_timer >= self.REPRODUCTION_TIME:
             self._reproduction_timer = 0
 
-            if random.random() <= 0.2:  # beneficial mutation of individual during reproduction
+            if random.random() <= self.MUTATION_CHANCE:  # beneficial mutation of individual during reproduction
                 passed_on_fitness = self._fitness + random.uniform(0, 0.1)
             else:
                 passed_on_fitness = self._fitness
