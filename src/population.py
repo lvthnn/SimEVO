@@ -29,9 +29,9 @@ class Population:
         return result_str
 
     def check_population(self, difficulty, percent):
-        """ Expose a population to an environmental factor. Difficulty is an integer ranging from 0 and up
+        """ Expose a population to an environmental factor. Difficulty is a numeric value ranging from 0 and up
         so that if an individual's fitness is lower than the difficulty, the individual dies and is removed 
-        from the population. Percentage specifies how much of the population (in %) is exposed to the environmental
+        from the population. Percentage specifies how much of the population (ranging from 0 to 1) is exposed to the environmental
         factor. Note that a single individual CAN be exposed to an environmetal factor several times."""
 
         if percent == 1.0:
