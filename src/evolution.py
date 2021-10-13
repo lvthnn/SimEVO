@@ -10,6 +10,7 @@ class Evolution:
         self._check_percent = check_percent
 
     def interval_cycle(self):
+        """ Completes a single 'cycle' of the algorithm. """
         population = self._population
         difficulty = self._difficulty
         percent = self._check_percent

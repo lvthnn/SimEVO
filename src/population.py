@@ -22,6 +22,7 @@ class Population:
             self._members.append(i)
 
     def __str__(self):
+        """ Return a string representation of population members. """
         result_str = ""
         for i in self._members:
             result_str += "Organism [GT] %s [PT] %s | Fitness: %.2f | Age: %s \n" % (
