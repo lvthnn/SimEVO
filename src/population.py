@@ -14,7 +14,7 @@ class Population:
 
         for _ in range(n):
             i = Organism()
-            i.determine_genotype(self._init_genotype_distribution)
+            i.introduce_mutants(self._init_genotype_distribution)
             i.calc_fitness()
             i._age = random.randint(0, Organism.MAX_AGE / 2)
             i._reproduction_timer = random.randrange(
@@ -88,7 +88,7 @@ class Population:
         # increased (shorter until reproduces next).
         self.tick()
 
-        # All individuals within the environment are exposed to environmental factor
+        # Selected population are exposed to environmental factor
         # which determines whether they live or die.
         self.check_population(difficulty, percent)
 

@@ -61,7 +61,7 @@ def main():
         ax2.tick_params(top=False, right=False)
         ax2.grid()
 
-        sns.kdeplot(density, ax=ax3)
+        sns.kdeplot(density, ax=ax3, warn_singular = False)
         ax3.set_xlabel('Fitness value')
         ax3.set_ylabel('Density')
         ax3.tick_params(left=False, top=False, right=False)

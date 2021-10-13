@@ -3,8 +3,8 @@ import random
 
 class Organism:
     GT_DOMINANT = "F"
-    REPRODUCTION_TIME = 5
-    MAX_AGE = 18
+    REPRODUCTION_TIME = 2
+    MAX_AGE = 6
 
     def __init__(self, genotype="f", phenotype="", fitness=0, age=0, reproduction_timer=6):
         self._genotype = genotype
@@ -13,7 +13,7 @@ class Organism:
         self._age = age
         self._reproduction_timer = reproduction_timer
 
-    def determine_genotype(self, chance):
+    def introduce_mutants(self, chance):
         """ Determines whether an individual carries the recessive or dominant genotype. Chance parameter
         is passed in to allow for percentage of population to carry specific genotype."""
         if chance >= random.random():
@@ -49,14 +49,14 @@ class Organism:
 
     def reproduce(self):
         """An organism reproduces and passes on genes to offspring. TODO: Add chance of mutation and beneficial and deleterious mutations. """
-        if self._reproduction_timer >= 2:
+        if self._reproduction_timer >= self.REPRODUCTION_TIME:
             self._reproduction_timer = 0
 
-            if random.random() <= 0.001:  # beneficial mutation of individual during reproduction
+            if random.random() <= 0.2:  # beneficial mutation of individual during reproduction
                 passed_on_fitness = self._fitness + random.uniform(0, 0.1)
             else:
                 passed_on_fitness = self._fitness
             offspring = Organism(
-                self._genotype, self._phenotype, passed_on_fitness, 0, 2)
+                self._genotype, self._phenotype, passed_on_fitness, 0)
             return offspring
         return False
