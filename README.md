@@ -8,6 +8,7 @@ The module can be installed using pip:
 **Notice:** As of currently, the package is not functional for use. I am fully aware of this and am working to fix it.
 
 ## Features
+- Individual based simulation
 - Configurable environmental difficulty with increment/decrement option
 - Specification of mutation ratio and check population size
 - Visualize algorithm output using Matplotlib
