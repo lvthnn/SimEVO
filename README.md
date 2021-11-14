@@ -12,3 +12,5 @@ The module can be installed using pip:
 - Write out data as CSV files for data analysis
 
 ## Future implementations
+- [ ] Implement independent module structure
+- [ ] Add optional visualization and data out function
