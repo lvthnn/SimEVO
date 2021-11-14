@@ -7,7 +7,7 @@ This project aims to simulate the adaptation of natural populations as a result 
 The module can be installed using pip:
 ```pip install simevo```
 
-**Notice:** As of currently, the package is not functional for use. I am fully aware of this and am working to fix it.
+**Notice:** As of currently, the package is not functional for use. I am redesigning some elements of the model and hence it will take some time before the algorithm can be used again.
 
 ## Features
 - Individual based simulation
