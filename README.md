@@ -17,3 +17,4 @@ The module can be installed using pip:
 ## Future implementations
 - [ ] Implement independent module structure
 - [ ] Add optional visualization and data out function
+- [ ] Optimization
