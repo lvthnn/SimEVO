@@ -5,6 +5,8 @@ This project aims to simulate the adaptation of natural populations as a result 
 The module can be installed using pip:
 ```pip install EvoAlg```
 
+**Notice:** As of currently, the package is not functional for use. I am fully aware of this and am working to fix it.
+
 ## Features
 - Configurable environmental difficulty with increment/decrement option
 - Specification of mutation ratio and check population size
