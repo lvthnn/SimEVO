@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: evosim
+Version: 1.0.0
+Summary: A tool for simulating adaptation of natural populations over time
+Home-page: https://github.com/lvthnn/SimEVO
+Author: Kári Hlynsson
+Author-email: kari.hlynsson@gmail.com
+License: UNKNOWN
+Keywords: biology,evolution,simulation
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# 🧬 SimEVO — Evolutionary Simulation v1.0.0
+This project aims to simulate the adaptation of natural populations as a result of selection. For more information on how the algorithm is constructed and operates, read the ```DOCUMENTATION.md``` file included in the repository. Additionally, you may be interested in reading the Jupyter Notebook that can be found in the ```notes``` directory.
+
+## Installation
+The module can be installed using pip:
+```pip install EvoAlg```
+
+## Features
+- Configurable environmental difficulty with increment/decrement option
+- Specification of mutation ratio and check population size
+- Visualize algorithm output using Matplotlib
+- Write out data as CSV files for data analysis
+
+## Future implementations
+
+
