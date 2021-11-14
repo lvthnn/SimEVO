@@ -42,4 +42,10 @@ When an individual is exposed to an environmental check, his chances of survival
 The ```difficulty``` is a numeric variable which defines the difficulty of the environment relative to its population. If a checked individual's ```fitness``` attribute's numeric value is lower than that of the environmental difficulty, that individual dies.
 
 **Population difficulty**<br>
-The variable ```population_difficulty``` can be accessed by calling the ```calc_population_diff()``` function on the population object. This returns a double value equals to the ratio of individuals who suffice the condition $w_i < \mathscr E_d$ over the population size. The value of ```population_difficulty``` is hence between [0;1]. Higher values of this variable indicates lower degree of adaptation whereas lower values indicate higher degree of adaptation to the environment.
+The variable ```population_difficulty``` can be accessed by calling the ```calc_population_diff()``` function on the population object. This returns a double value equals to the ratio of individuals who suffice the condition $w_i < \mathscr E_\delta$ over the population size. The value of ```population_difficulty``` is hence between [0;1]. Higher values of this variable indicates lower degree of adaptation whereas lower values indicate higher degree of adaptation to the environment.
+
+**Note:** The mathematical definition of the population difficulty is
+$$
+    D= \frac{p_\delta}{N}
+$$
+where $p_\delta$ is the subset of inviduals $i$ within population $\mathscr P$ such that $w_i < \mathscr E_\delta$ and $N$ is the population size. The first order derivate of $D$, i.e. $D'$, can be used to represent whether the population adaptation has reached a point of stability or not. When $D' < 0$, we assume the population is adapting to its environment.
