@@ -3,7 +3,7 @@ This project aims to simulate the adaptation of natural populations as a result 
 
 ## Installation
 The module can be installed using pip:
-```pip install EvoAlg```
+```pip install simevo```
 
 **Notice:** As of currently, the package is not functional for use. I am fully aware of this and am working to fix it.
 
