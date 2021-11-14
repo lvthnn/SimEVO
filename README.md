@@ -1,3 +1,5 @@
+![banner](https://user-images.githubusercontent.com/63433562/141666888-8070c3e0-643b-46e7-862b-162dbb044ccb.png)
+
 # 🧬 SimEVO — Evolutionary Simulation v1.0.0
 This project aims to simulate the adaptation of natural populations as a result of selection. For more information on how the algorithm is constructed and operates, read the ```DOCUMENTATION.md``` file included in the repository. Additionally, you may be interested in reading the Jupyter Notebook that can be found in the ```notes``` directory.
 
