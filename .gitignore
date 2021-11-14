@@ -1,0 +1,10 @@
+.tex
+.aux
+.fls
+.fdb_latexmk
+.tex
+.log
+.out
+.synctex.gz
+.toc
+src/simevo/__pycache__

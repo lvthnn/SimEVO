@@ -1,0 +1,59 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage[a4paper, top=3cm, bottom=3cm, left=3cm, right=3cm, marginparwidth=1.75cm]{geometry}
+\usepackage[utf8x]{inputenc}
+
+% fyrir myndir
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{wrapfig}
+\usepackage{nicefrac}
+\usepackage{gensymb}
+\captionsetup{font=small, labelfont={bf,sf}}
+
+\usepackage[colorlinks=False]{hyperref}
+
+\usepackage{amsmath, amsfonts, amssymb} 
+\usepackage{mathrsfs}
+\usepackage{color}
+\usepackage{enumitem}
+\usepackage[version=4]{mhchem}
+\usepackage{icomma}
+\usepackage{listings}
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily,
+    breaklines=true, 
+    columns=flexible,
+    numbers=left,
+    numberstyle=\ttfamily,
+    showstringspaces=false
+}
+
+\title{
+    The SimEVO project
+} 
+\author{Kári Hlynsson}
+\date{\small \lstinline{https://github.com/lvthnn/SimEVO}}
+
+\begin{document}
+    \maketitle
+
+    \begin{abstract}
+        \noindent We discuss the theoretical basis of the SimEVO simulation project
+        and how it can be used to obtain data for use in biological research. Mathematical
+        notation is covered and some useful methods of analysis are proposed. We discuss some
+        ideas on how to obtain and process data in order to deduce conclusions regarding forces of
+        selection and evolutionary processes. For more information on installation or usage, see the
+        \lstinline{README.md} file located in the GitHub repository.
+    \end{abstract}
+
+    \tableofcontents
+
+    \section{Introduction}
+    Write introduction please.
+
+    \section{Theoretical basis}
+    In traditional evolutionary biology, the scope of observation is limited to a particular population within a location.
+    
+ \end{document}
