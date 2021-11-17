@@ -3,7 +3,6 @@ from organism import Organism
 import random
 import math
 
-
 class Population:
 
     def __init__(self, members, init_genotype_distribution, difficulty, n):
