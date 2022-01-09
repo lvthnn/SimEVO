@@ -1,4 +1,6 @@
+#!/usr/bin/env python3
 import pygame, random as rand, os, math
+from colorhash import ColorHash
 
 # Pygame setup
 pygame.init()
@@ -10,9 +12,8 @@ pygame.display.set_caption('SimEvo')
 bases = ['A', 'T', 'C', 'G']
 gene_length = 20
 
-# Color of individuals in Pygame display
-ind_color = (150, 150, 150)
-food_color = (25, 198, 43)
+# Food color in Pygame
+food_color = (255, 255, 255)
 
 # Population metrics 
 pop_size_init = 100
@@ -31,11 +32,17 @@ for i in range(pop_size_init):
 
 # Simulation metrics
 time_elapsed = 0
+generation_count = 1
 
 # Represents ratio of food presents and population size
 environmental_difficulty = 0.5
 num_food = math.ceil(environmental_difficulty * pop_size_init) 
 food = []
+
+for i in range(num_food):
+    x = rand.randrange(width)
+    y = rand.randrange(height)
+    food.append([x,y])
 
 # Individual moveset
 moveset = [
@@ -49,6 +56,43 @@ moveset = [
  [-1,1]
 ]
 
+# 3x3 ellipse used for scanning surroundings
+scanset = [
+ [0,1],
+ [0,2],
+ [0,3],
+ [0,-1],
+ [0,-2],
+ [0,-3],
+ [1,0],
+ [2,0],
+ [3,0],
+ [-1,0],
+ [-2,0],
+ [-3,0],
+ [1,1],
+ [2,2],
+ [-1,-1],
+ [-2,-2],
+ [2,1],
+ [3,1],
+ [1,2],
+ [1,3],
+ [-2,1],
+ [-3,1],
+ [-1,2],
+ [-1,3],
+ [-2,-1],
+ [-3,-1],
+ [-1,-2],
+ [-1,-3],
+ [2,-1],
+ [3,-1],
+ [1,-2],
+ [1,-3]
+]
+
+# Individual operations
 def move(individual, movekey):
     x = individual[0]
     y = individual[1]
@@ -64,6 +108,25 @@ def eat(individual, food):
     # ...
     print('yo')
 
+def scan_surroundings(ind):
+    x = ind[0]
+    y = ind[1]
+    scan_result = []
+
+    for scan in scanset:
+        scanx = x + scan[0]
+        scany = y + scan[1]
+        
+        for i in range(len(population)):
+            if population[i][0] == scanx and population[i][1] == scany:
+                scan_result.append([population[i], 'individual'])
+
+        for i in range(len(food)):
+            if food[i][0] == scanx and food[i][1] == scany:
+                scan_result.append([food[i], 'food'])
+
+    return scan_result
+
 if __name__  == '__main__':
     running = True
     while running:
@@ -72,24 +135,25 @@ if __name__  == '__main__':
 
         screen.fill((0,0,0))
 
-        # Draw population to screen
         for i in range(len(population)):
-            pygame.draw.rect(screen, ind_color, (population[i][0], population[i][1], 1, 1))
-            move(population[i], rand.randrange(0,7)) # Issues move order to population
-
-        for i in range(num_food):
-            x = rand.randrange(width)
-            y = rand.randrange(height)
-
-            pygame.draw.rect(screen, food_color, (x, y, 1, 1))
-            food.append([x,y])
+            ind_color = ColorHash(population[i][2])
+            pygame.draw.rect(screen, ind_color.rgb, (population[i][0], population[i][1], 1, 1))
             
+            # Random movement, requires implementation
+            move(population[i], rand.randrange(0,7))
+            print(population[i][2])
+            
+            population[i][3] += 1
+
+        for i in range(len(food)):
+            pygame.draw.rect(screen, food_color, (food[i][0], food[i][1], 1, 1))
+
 
         pygame.display.update()
 
         # Caveman solution to print data to console, remove later
         os.system('cls' if os.name == 'nt' else 'clear')
-        print('Time: {time}'.format(time = time_elapsed))
+        print('Time: {time}\nGeneration: {generation}'.format(time = time_elapsed, generation = generation_count))
 
         time_elapsed += 1
 
