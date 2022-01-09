@@ -1,3 +1,4 @@
+[comment]: <> (This is a comment, it will not be included)
 ![banner](https://user-images.githubusercontent.com/63433562/141667134-85583442-8a07-4706-86f4-36c670276cf0.png)
 
 # 🧬 SimEVO — Evolutionary Simulation v1.0.0
