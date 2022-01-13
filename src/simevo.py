@@ -3,6 +3,7 @@ import pygame, random as rand, os, math, time, numpy as np
 from colorhash import ColorHash
 
 import behaviournet
+from behaviournet import BehaviourNet
 
 # Pygame setup
 pygame.init()
@@ -12,7 +13,7 @@ pygame.display.set_caption('Evolutionary simulation')
 
 # Base genetics
 bases = ['A', 'T', 'C', 'G']
-gene_length = 4830
+gene_length = 8883 
 aa_weights = behaviournet.initialize()
 
 # Food color in Pygame
@@ -33,7 +34,10 @@ for i in range(pop_size_init):
 
     gene = "".join(rand.choices(bases, k = gene_length))
 
-    population.append([x, y, gene, age, individual_energy])
+    nsx = BehaviourNet(gene) # nsx = nervous system
+    nsx_params = nsx.calculate_model_params()
+
+    population.append([x, y, gene, age, individual_energy, nsx])
 
 # Simulation metrics
 time_elapsed = 0
@@ -129,15 +133,15 @@ def scan_surroundings(ind):
        
         for i in range(len(population)):
             if population[i][0] == scanx and population[i][1] == scany:
-                scan_result.append([scanx, scany, 1])
+                scan_result.append([scan[0], scan[1], 1])
                 continue
 
         for i in range(len(food)):
             if food[i][0] == scanx and food[i][1] == scany:
-                scan_result.append([scanx, scany, 2])
+                scan_result.append([scan[0], scan[1], 2])
                 continue
 
-        scan_result.append([scanx, scany, 0])
+        scan_result.append([scan[0], scan[1], 0])
 
         # TODO: Implement scan which detects empty tiles and
         # adds them with values (x, y, 0)
@@ -149,8 +153,19 @@ def reproduce(ind):
     # One individual becomes two, with a slight
     # chance of mutation as indicated by the
     # variable mutation_rate
-    print('Yo')
+    print('Hasn\'t been implemented yet')
         
+def perform_action(ind, actionID):
+    # TODO: Abstraction we use to simplify code.
+    # Takes in integer input from individual nsx object
+    # and performs the appropriate action
+    
+    if actionID >= 7:
+        move(ind, actionID)
+    else:
+        print('Eating and reproduction have not yet been implemented.')
+    
+    
 
 if __name__  == '__main__':
     running = True
@@ -164,17 +179,16 @@ if __name__  == '__main__':
         screen.fill((0,0,0))
 
         for i in range(len(population)):
-            ind_color = ColorHash(population[i][2])
-            pygame.draw.rect(screen, ind_color.rgb, (population[i][0], population[i][1], 1, 1))
-            
-            # Random movement, requires implementation
-            move(population[i], rand.randrange(0,7))
-            
-            population[i][3] += 1
-            population[i][4] -= 1
+            current_individual = population[i]
 
-            # if population[i][4] == 0 or population[i][3] >= individual_max_age:
-                # population.remove(population[i])
+            ind_color = ColorHash(current_individual[2])
+            pygame.draw.rect(screen, ind_color.rgb, (current_individual[0], current_individual[1], 1, 1))
+           
+            # TODO: Organism acts based on input from neural network
+            # feedback. Formatted as integer ranging from [0,10].
+            surroundings = scan_surroundings(current_individual)
+            response = current_individual[5].feedforward(surroundings)
+
 
         for i in range(len(food)):
             pygame.draw.rect(screen, food_color, (food[i][0], food[i][1], 1, 1))
