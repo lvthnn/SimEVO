@@ -1,4 +1,4 @@
-#!/Users/kari/Github/SimEVO/venv/bin/python3.9
+#!/Users/kari/Github/SimEVO/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
