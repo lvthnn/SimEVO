@@ -59,6 +59,8 @@ class BehaviourNet:
         # returns integer from [0, 10] which describes
         # action in next round
 
+        print('Yo')
+
 
 
     def calculate_model_params(self):
@@ -89,6 +91,7 @@ class BehaviourNet:
         arr_seq = list(aa_seq) 
 
         count = 0
+        weight_bin = []
         for i in arr_seq:
             param_current = dict_aa[i]
             count += 1
@@ -96,7 +99,10 @@ class BehaviourNet:
             # If we've yet to fill out weights for
             # hidden layer...
             if count <= 2920:
-                w_mu.append(param_current)
+                if count % 20 == 0:
+                    w_mu.append(weight_bin)
+                    weight_bin = []
+                weight_bin.append(param_current)
             elif count >= 2920 and count <= 2940:
                 w_o.append(param_current)
             elif count >= 2940 and count <= 2960:
@@ -104,8 +110,8 @@ class BehaviourNet:
             elif count == 2961:
                 b_o.append(param_current)
 
-                P_mu = [np.array(w_mu), np.array(b_mu)]
-                P_o = [np.array(w_o), np.array(b_o)]
+                P_mu = [np.array(w_mu, dtype = object), np.array(b_mu, dtype = object)]
+                P_o = [np.array(w_o, dtype = object), np.array(b_o, dtype = object)]
 
                 self._params = [P_mu, P_o]
 
