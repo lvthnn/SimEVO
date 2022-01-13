@@ -2,15 +2,18 @@
 import pygame, random as rand, os, math, time, numpy as np
 from colorhash import ColorHash
 
+import behaviournet
+
 # Pygame setup
 pygame.init()
 size = width, height = 800, 800
 screen = pygame.display.set_mode(size)
-pygame.display.set_caption('SimEvo')
+pygame.display.set_caption('Evolutionary simulation')
 
 # Base genetics
 bases = ['A', 'T', 'C', 'G']
-gene_length = 4790
+gene_length = 4830
+aa_weights = behaviournet.initialize()
 
 # Food color in Pygame
 food_color = (255, 255, 255)
@@ -108,8 +111,8 @@ def move(individual, movekey):
     individual[1] = newy
 
 def eat(individual, food):
-    # TODO: Individual needs to have same (x,y) coordinate as food
-    # in order to eat food
+    # TODO: Individual needs to be within (|1|, |1|)
+    # to consume food
     print('yo')
 
 def scan_surroundings(ind):
@@ -127,10 +130,17 @@ def scan_surroundings(ind):
         for i in range(len(population)):
             if population[i][0] == scanx and population[i][1] == scany:
                 scan_result.append([scanx, scany, 1])
+                continue
 
         for i in range(len(food)):
             if food[i][0] == scanx and food[i][1] == scany:
                 scan_result.append([scanx, scany, 2])
+                continue
+
+        scan_result.append([scanx, scany, 0])
+
+        # TODO: Implement scan which detects empty tiles and
+        # adds them with values (x, y, 0)
 
     return scan_result
 
@@ -178,7 +188,7 @@ if __name__  == '__main__':
 
         # Caveman solution to print data to console, remove later
         os.system('cls' if os.name == 'nt' else 'clear')
-        print('Time: {time}\nGeneration: {generation}\nAverage iteration time: {avgtime}'.format(time = time_elapsed, generation = generation_count, avgtime = meanTime))
+        print('Time: {time}\nGeneration: {generation}\nAverage iteration time: {avgtime}\nAmino acid weights: {aaweights}'.format(time = time_elapsed, generation = generation_count, avgtime = meanTime, aaweights = aa_weights))
 
         time_elapsed += 1
 
