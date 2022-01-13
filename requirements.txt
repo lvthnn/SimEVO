@@ -1,3 +1,5 @@
+biopython==1.79
 colorhash==1.0.4
+numpy==1.22.0
 pathfinding==1.0.1
 pygame==2.1.2
