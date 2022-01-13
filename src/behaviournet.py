@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-import Bio.Seq as bio
-import pprint, time
 
+# FIXME: Remove BioPython integration
+import Bio.Seq as bio
 import numpy as np, random as rand
+
+import time
 
 # For reproducibility
 rand.seed(10)
@@ -44,6 +46,10 @@ def initialize():
         dict_aa[aa] = rand.uniform(-1,1) 
     return str(dict_aa)
 
+# Activation methods for behavioural net
+def sigmoid(x):
+    return 1 / (1 + np.exp(-1*x.astype(float)))
+
 # This class stores each individual's "nervous system"
 # TODO: Implement fitness calculation from translated AA sequence
 # TODO: Implement next move function which calculates the next move
@@ -58,16 +64,30 @@ class BehaviourNet:
         # TODO: Implement feed forward into NN which
         # returns integer from [0, 10] which describes
         # action in next round
+        layer_mu = []
+        weights_output = self._params[2]
+        biases_output = self._params[3]
 
-        print('Yo')
+        # Calculations for mu-layer
+        for weightset in self._params[0]:
+            m = np.dot(weightset, input)
+            layer_mu.append(m)
 
+        layer_mu = sigmoid(np.add(layer_mu, self._params[1]))
 
+        # Calculations for output layer
+        output = sigmoid(np.add(
+            np.dot(layer_mu, weights_output),
+            biases_output
+        ))
 
+        return output
+ 
     def calculate_model_params(self):
         # TODO: Takes in amino acid sequence from @param self._aa
         # and uses @param dict_aa to transcribe respective amino acids
-        # into weights and biasesfor model. This has to be done for every node in the
-        # network, a total of 21 times.
+        # into weights and biases for model. This has to be done for every 
+        # node in the network, a total of 21 times.
 
         # Nodes in the μ-layer (hidden layer) have the dimensions (146x1)
         # while the o-layer (output layer) has only one node and input dimensions
@@ -79,41 +99,27 @@ class BehaviourNet:
         # P_μ = [w_μ, b_μ] -- Contains weight and bias matrices
         # P_o = [w_o, b_o] -- Contains weight matrices and output bias
 
-        # Weight matrix and biases for hidden layer
-        w_mu = []
-        b_mu = []
-
-        # Weight matrix and bias for output layer
-        w_o = []
-        b_o = []
+        # FIXME: Needs revision and optimisation
 
         aa_seq = str(self._aa)
         arr_seq = list(aa_seq) 
 
-        count = 0
-        weight_bin = []
-        for i in arr_seq:
-            param_current = dict_aa[i]
-            count += 1
+        translate = []
 
-            # If we've yet to fill out weights for
-            # hidden layer...
-            if count <= 2920:
-                if count % 20 == 0:
-                    w_mu.append(weight_bin)
-                    weight_bin = []
-                weight_bin.append(param_current)
-            elif count >= 2920 and count <= 2940:
-                w_o.append(param_current)
-            elif count >= 2940 and count <= 2960:
-                b_mu.append(param_current)
-            elif count == 2961:
-                b_o.append(param_current)
+        for e in arr_seq:
+            translate.append(dict_aa[e])
 
-                P_mu = [np.array(w_mu, dtype = object), np.array(b_mu, dtype = object)]
-                P_o = [np.array(w_o, dtype = object), np.array(b_o, dtype = object)]
+        w_mu = np.array_split(translate[:2880], 20)
+        b_mu = translate[2880:2900]
+        w_o = translate[2900:2920]
+        b_o = translate[2920]
 
-                self._params = [P_mu, P_o]
+        self._params = [
+            np.array(w_mu),
+            np.array(b_mu),
+            np.array(w_o),
+            np.array(b_o)
+        ]
 
 if __name__ == '__main__':
     initialize()
@@ -124,12 +130,14 @@ if __name__ == '__main__':
     behaviour_nsx = BehaviourNet(gene)
     behaviour_nsx.calculate_model_params()
 
+    sample_input = np.random.rand(144,)
+    behaviour_nsx.feedforward(sample_input)
     # Check for correct dimensions
-    print(np.shape(behaviour_nsx._params[0][0]))
-    print(np.shape(behaviour_nsx._params[0][1]))
+    # print(behaviour_nsx._params[0][0])
+    # print(np.shape(behaviour_nsx._params[0][1]))
 
-    print(np.shape(behaviour_nsx._params[1][0]))
-    print(np.shape(behaviour_nsx._params[1][1]))
+    # print(np.shape(behaviour_nsx._params[1][0]))
+    # print(np.shape(behaviour_nsx._params[1][1]))
 
     time.sleep(1000)
 

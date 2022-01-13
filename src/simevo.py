@@ -13,14 +13,14 @@ pygame.display.set_caption('Evolutionary simulation')
 
 # Base genetics
 bases = ['A', 'T', 'C', 'G']
-gene_length = 8883 
+gene_length = 8763
 aa_weights = behaviournet.initialize()
 
 # Food color in Pygame
 food_color = (255, 255, 255)
 
 # Population metrics 
-pop_size_init = 100
+pop_size_init = 1
 population = []
 mutation_rate = 0.05
 
@@ -32,10 +32,10 @@ for i in range(pop_size_init):
     y = rand.randrange(0, height)
     age = 0
 
-    gene = "".join(rand.choices(bases, k = gene_length))
+    gene = ''.join(rand.choices(bases, k = gene_length))
 
     nsx = BehaviourNet(gene) # nsx = nervous system
-    nsx_params = nsx.calculate_model_params()
+    nsx.calculate_model_params()
 
     population.append([x, y, gene, age, individual_energy, nsx])
 
@@ -66,40 +66,72 @@ moveset = [
  [-1,1]
 ]
 
-# 3x3 ellipse used for scanning surroundings
+# 7x7 square used for scanning surroundings
 scanset = [
- [0,1],
- [0,2],
- [0,3],
- [0,-1],
- [0,-2],
- [0,-3],
- [1,0],
- [2,0],
- [3,0],
- [-1,0],
- [-2,0],
- [-3,0],
- [1,1],
- [2,2],
- [-1,-1],
- [-2,-2],
- [2,1],
- [3,1],
- [1,2],
- [1,3],
- [-2,1],
- [-3,1],
- [-1,2],
- [-1,3],
- [-2,-1],
- [-3,-1],
- [-1,-2],
- [-1,-3],
- [2,-1],
- [3,-1],
- [1,-2],
- [1,-3]
+    # Right
+    [1,0],
+    [2,0],
+    [3,0],
+    # Left
+    [-1,0],
+    [-2,0],
+    [-3,0],
+    # Up
+    [0,1],
+    [0,2],
+    [0,3],
+    # Down
+    [0,-1],
+    [0,-2],
+    [0,-3],
+    # RUDiagonal
+    [1,1],
+    [2,2],
+    [3,3],
+    #RDDiagonal
+    [1,-1],
+    [2,-2],
+    [3,-3],
+    # LDDiagonal
+    [-1,-1],
+    [-2,-2],
+    [-3,-3],
+    #LUDiagonal
+    [-1,1],
+    [-2,2],
+    [-3,3],
+    # LWing-I
+    [1,2],
+    [1,3],
+    [2,3],
+    # RWing-I
+    [2,1],
+    [3,1],
+    [3,2],
+    # LWing-II
+    [-2,1],
+    [-3,1],
+    [-3,2],
+    # RWing-II
+    [-1,2],
+    [-1,3],
+    [-2,3],
+    # LWing-III
+    [-2,-1],
+    [-3,-1],
+    [-3,-2],
+    # RWing-III
+    [-1,-2],
+    [-1,-3],
+    [-2,-3],
+    # LWing-IV
+    [1,-2],
+    [1,-3],
+    [2,-3],
+    # RWing-IV
+    [2,-1],
+    [3,-1],
+    [3,-2]
 ]
 
 # Individual operations
@@ -113,6 +145,9 @@ def move(individual, movekey):
 
     individual[0] = newx
     individual[1] = newy
+
+    print(newx)
+    print(newy)
 
 def eat(individual, food):
     # TODO: Individual needs to be within (|1|, |1|)
@@ -143,10 +178,7 @@ def scan_surroundings(ind):
 
         scan_result.append([scan[0], scan[1], 0])
 
-        # TODO: Implement scan which detects empty tiles and
-        # adds them with values (x, y, 0)
-
-    return scan_result
+    return np.array(scan_result, dtype = object).flatten()
 
 def reproduce(ind):
     # TODO: Implement asexual reproduction
@@ -163,9 +195,7 @@ def perform_action(ind, actionID):
     if actionID >= 7:
         move(ind, actionID)
     else:
-        print('Eating and reproduction have not yet been implemented.')
-    
-    
+        print('Eating and reproduction have not yet been implemented.') 
 
 if __name__  == '__main__':
     running = True
@@ -175,6 +205,8 @@ if __name__  == '__main__':
 
         # Get time at the start of simulation iteration
         startTime = time.time()
+        response = 0
+        action = 0
 
         screen.fill((0,0,0))
 
@@ -188,7 +220,9 @@ if __name__  == '__main__':
             # feedback. Formatted as integer ranging from [0,10].
             surroundings = scan_surroundings(current_individual)
             response = current_individual[5].feedforward(surroundings)
-
+            
+            action = round(7 * response)
+            move(population[i], action)
 
         for i in range(len(food)):
             pygame.draw.rect(screen, food_color, (food[i][0], food[i][1], 1, 1))
@@ -196,13 +230,20 @@ if __name__  == '__main__':
 
         pygame.display.update()
 
-        # Append total time to array
+        # # Append total time to array
         simulation_time.append(time.time() - startTime)
         meanTime = np.mean(simulation_time)
 
         # Caveman solution to print data to console, remove later
         os.system('cls' if os.name == 'nt' else 'clear')
-        print('Time: {time}\nGeneration: {generation}\nAverage iteration time: {avgtime}\nAmino acid weights: {aaweights}'.format(time = time_elapsed, generation = generation_count, avgtime = meanTime, aaweights = aa_weights))
+        print('Time: {time}\nGeneration: {generation}\nAverage iteration time: {avgtime}\nAmino acid weights: {aaweights}\nNeural network response: {nnresponse}\nAction taken: {action}'.format(
+            time = time_elapsed, 
+            generation = generation_count, 
+            avgtime = meanTime, 
+            aaweights = aa_weights,
+            nnresponse = response,
+            action = action))
 
         time_elapsed += 1
+        time.sleep(0.1)
 
