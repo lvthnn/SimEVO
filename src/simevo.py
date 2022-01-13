@@ -126,11 +126,11 @@ def scan_surroundings(ind):
        
         for i in range(len(population)):
             if population[i][0] == scanx and population[i][1] == scany:
-                scan_result.append([population[i], 1])
+                scan_result.append([scanx, scany, 1])
 
         for i in range(len(food)):
             if food[i][0] == scanx and food[i][1] == scany:
-                scan_result.append([food[i], 2])
+                scan_result.append([scanx, scany, 2])
 
     return scan_result
 
