@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
 # FIXME: Remove BioPython integration
+# FIXME: Introduce other representation of genetic language 
 import Bio.Seq as bio
 import numpy as np, random as rand
 
 import time
 
 # For reproducibility
-rand.seed(10)
+rand.seed(18192)
 
 # Contains single-letter amino acid abbreviations
 amino_acids = [
@@ -43,7 +44,7 @@ dict_aa = {}
 # Initializes amino acid weight table
 def initialize():
     for aa in amino_acids:
-        dict_aa[aa] = rand.uniform(-1,1) 
+        dict_aa[aa] = rand.uniform(-2, 2) 
     return str(dict_aa)
 
 # Activation methods for behavioural net

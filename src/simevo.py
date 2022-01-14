@@ -1,9 +1,29 @@
+#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
+#
+#
+#       Kári Hlynsson, 2021-2022.
+#       Feel free to use! :)
+#       
+#       For more info on how this script works and what it aims
+#       to demonstrate, checkout the README.md as well as my blog 
+#       post!
+#
+#       https://github.com/lvthnn/SimEVO
+#
+#
+#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
+
 #!/usr/bin/env python3
-import pygame, random as rand, os, math, time, numpy as np
-from colorhash import ColorHash
+import pygame, random as rand, math, time, numpy as np, os
 
 import behaviournet
 from behaviournet import BehaviourNet
+
+#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
+# 
+#   globals
+#
+#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
 
 # Pygame setup
 pygame.init()
@@ -17,44 +37,34 @@ gene_length = 8763
 aa_weights = behaviournet.initialize()
 
 # Food color in Pygame
-food_color = (255, 255, 255)
+food_color = (0, 255, 0)
+ind_color = (0, 0, 0)
+
+# Stores all entities, allows for faster searches based
+# on (x,y) coordinate
+entity_field = np.empty(size, dtype = int)
 
 # Population metrics 
-pop_size_init = 1
+pop_size_init = 100
 population = []
 mutation_rate = 0.05
-
-individual_max_age = 10000
-individual_energy = 100
-
-for i in range(pop_size_init):
-    x = rand.randrange(0, width)
-    y = rand.randrange(0, height)
-    age = 0
-
-    gene = ''.join(rand.choices(bases, k = gene_length))
-
-    nsx = BehaviourNet(gene) # nsx = nervous system
-    nsx.calculate_model_params()
-
-    population.append([x, y, gene, age, individual_energy, nsx])
+individual_energy = 400
+generation_time = 1200
 
 # Simulation metrics
 time_elapsed = 0
 generation_count = 1
 simulation_time = []
-
-# Represents ratio of food presents and population size
-environmental_difficulty = 0.5
+environmental_difficulty = 8
 num_food = math.ceil(environmental_difficulty * pop_size_init) 
-food = []
 
-for i in range(num_food):
-    x = rand.randrange(width)
-    y = rand.randrange(height)
-    food.append([x,y])
+#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
+# 
+#   operation sets 
+#
+#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
 
-# Individual moveset
+# 3x3 square for movement 
 moveset = [
  [0,1],
  [1,0],
@@ -66,7 +76,7 @@ moveset = [
  [-1,1]
 ]
 
-# 7x7 square used for scanning surroundings
+# 7x7 square for scanning surroundings 
 scanset = [
     # Right
     [1,0],
@@ -134,6 +144,41 @@ scanset = [
     [3,-2]
 ]
 
+#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
+# 
+#   entity and entity_field setup 
+#
+#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
+
+food = []
+
+for i in range(pop_size_init):
+    x = rand.randrange(0, width)
+    y = rand.randrange(0, height)
+    age = 0
+
+    gene = ''.join(rand.choices(bases, k = gene_length))
+
+    nsx = BehaviourNet(gene) # nsx = nervous system
+    nsx.calculate_model_params()
+
+    population.append([x, y, gene, age, individual_energy, nsx])
+    entity_field[x][y] = 2
+
+
+for i in range(num_food):
+    x = rand.randrange(width)
+    y = rand.randrange(height)
+
+    food.append([x,y])
+    entity_field[x][y] = 1
+
+#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
+# 
+#   individual methods 
+#
+#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
+
 # Individual operations
 def move(individual, movekey):
     x = individual[0]
@@ -146,56 +191,49 @@ def move(individual, movekey):
     individual[0] = newx
     individual[1] = newy
 
-    print(newx)
-    print(newy)
+def scan_surroundings(individual):
+    x = individual[0]
+    y = individual[1]
 
-def eat(individual, food):
-    # TODO: Individual needs to be within (|1|, |1|)
-    # to consume food
-    print('yo')
-
-def scan_surroundings(ind):
-    x = ind[0]
-    y = ind[1]
-
-    # Scan results are either 1 (individual) or 2 (food)
-    # with relative positions
     scan_result = []
+
 
     for scan in scanset:
         scanx = x + scan[0]
         scany = y + scan[1]
-       
-        for i in range(len(population)):
-            if population[i][0] == scanx and population[i][1] == scany:
-                scan_result.append([scan[0], scan[1], 1])
-                continue
-
-        for i in range(len(food)):
-            if food[i][0] == scanx and food[i][1] == scany:
-                scan_result.append([scan[0], scan[1], 2])
-                continue
-
-        scan_result.append([scan[0], scan[1], 0])
-
-    return np.array(scan_result, dtype = object).flatten()
-
-def reproduce(ind):
-    # TODO: Implement asexual reproduction
-    # One individual becomes two, with a slight
-    # chance of mutation as indicated by the
-    # variable mutation_rate
-    print('Hasn\'t been implemented yet')
         
+        if entity_field[scanx - 1][scany - 1] != 0:
+            print('Hello')
+
+        # for individual in population:
+            # if individual[0] == scanx and individual[1] == scany:
+                # replacement = scan_result.index([scan[0], scan[1], 0])
+                # scan_result[replacement][2] == 1
+
+        # for f in food:
+            # if f[0] == scanx and f[1] == scany:
+                # replacement = scan_result.index([scan[0], scan[1], 0])
+                # scan_result[replacement][2] == 2
+
+                # if abs(f[0] - x) <= 1 and abs(f[1] - y) <= 1:
+                    # ind[4] = individual_energy
+                    # food.remove(f)
+
+        return np.array(scan_result, dtype = object).flatten()
+
 def perform_action(ind, actionID):
     # TODO: Abstraction we use to simplify code.
     # Takes in integer input from individual nsx object
-    # and performs the appropriate action
-    
-    if actionID >= 7:
+    # and performs the appropriate action 
+
+    if actionID <= 7:
         move(ind, actionID)
-    else:
-        print('Eating and reproduction have not yet been implemented.') 
+
+#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
+# 
+#   main loop 
+#
+#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
 
 if __name__  == '__main__':
     running = True
@@ -205,45 +243,39 @@ if __name__  == '__main__':
 
         # Get time at the start of simulation iteration
         startTime = time.time()
-        response = 0
-        action = 0
+        screen.fill((80, 80, 80))
 
-        screen.fill((0,0,0))
-
-        for i in range(len(population)):
-            current_individual = population[i]
-
-            ind_color = ColorHash(current_individual[2])
-            pygame.draw.rect(screen, ind_color.rgb, (current_individual[0], current_individual[1], 1, 1))
+        for individual in population:
+            pygame.draw.rect(screen, ind_color, (individual[0], individual[1], 2, 2))
            
             # TODO: Organism acts based on input from neural network
-            # feedback. Formatted as integer ranging from [0,10].
-            surroundings = scan_surroundings(current_individual)
-            response = current_individual[5].feedforward(surroundings)
+            # feedback. Formatted as integer ranging from [0,7].
+            surroundings = scan_surroundings(individual)
+            response = individual[5].feedforward(surroundings)
             
             action = round(7 * response)
-            move(population[i], action)
+            perform_action(individual, action)
+
+            individual[4] -= 1
+            if individual[4] == 0:
+                population.remove(individual)
 
         for i in range(len(food)):
-            pygame.draw.rect(screen, food_color, (food[i][0], food[i][1], 1, 1))
+            pygame.draw.rect(screen, food_color, (food[i][0], food[i][1], 2, 2))
 
 
         pygame.display.update()
-
-        # # Append total time to array
+        
+        # Append total time to array
         simulation_time.append(time.time() - startTime)
         meanTime = np.mean(simulation_time)
 
         # Caveman solution to print data to console, remove later
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print('Time: {time}\nGeneration: {generation}\nAverage iteration time: {avgtime}\nAmino acid weights: {aaweights}\nNeural network response: {nnresponse}\nAction taken: {action}'.format(
-            time = time_elapsed, 
-            generation = generation_count, 
-            avgtime = meanTime, 
-            aaweights = aa_weights,
-            nnresponse = response,
-            action = action))
+        # os.system('cls' if os.name == 'nt' else 'clear')
+        # print('Time: {time}\nGeneration: {generation}\nAverage iteration time: {avgtime}'.format(
+            # time = time_elapsed, 
+            # generation = generation_count, 
+            # avgtime = meanTime
+        # ))
 
         time_elapsed += 1
-        time.sleep(0.1)
-
