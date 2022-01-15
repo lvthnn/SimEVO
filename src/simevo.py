@@ -45,7 +45,7 @@ ind_color = (0, 0, 0)
 entity_field = np.empty(size, dtype = int)
 
 # Population metrics 
-pop_size_init = 100
+pop_size_init = 50
 population = []
 mutation_rate = 0.05
 individual_energy = 400
@@ -181,15 +181,14 @@ for i in range(num_food):
 
 # Individual operations
 def move(individual, movekey):
-    x = individual[0]
-    y = individual[1]
+    # TODO: This does not update entity field
     movement = moveset[movekey]
+    x = individual[0] + movement[0]
+    y = individual[1] + movement[1]
 
-    newx = x + movement[0]
-    newy = y + movement[1]
+    individual[0] = x
+    individual[1] = y
 
-    individual[0] = newx
-    individual[1] = newy
 
 def scan_surroundings(individual):
     x = individual[0]
@@ -201,25 +200,17 @@ def scan_surroundings(individual):
     for scan in scanset:
         scanx = x + scan[0]
         scany = y + scan[1]
-        
-        if entity_field[scanx - 1][scany - 1] != 0:
-            print('Hello')
+        entity_current = 0
 
-        # for individual in population:
-            # if individual[0] == scanx and individual[1] == scany:
-                # replacement = scan_result.index([scan[0], scan[1], 0])
-                # scan_result[replacement][2] == 1
+        if scanx - 1 <= width - 1 and scany - 1 <= height - 1:
+            entity_current = entity_field[scanx - 1][scany - 1]
 
-        # for f in food:
-            # if f[0] == scanx and f[1] == scany:
-                # replacement = scan_result.index([scan[0], scan[1], 0])
-                # scan_result[replacement][2] == 2
+        if entity_current != 0:
+            scan_result.append([scanx, scany, entity_current])
+        else:
+            scan_result.append([scanx, scany, 0])
 
-                # if abs(f[0] - x) <= 1 and abs(f[1] - y) <= 1:
-                    # ind[4] = individual_energy
-                    # food.remove(f)
-
-        return np.array(scan_result, dtype = object).flatten()
+    return np.array(scan_result, dtype = object).flatten()
 
 def perform_action(ind, actionID):
     # TODO: Abstraction we use to simplify code.
@@ -256,9 +247,12 @@ if __name__  == '__main__':
             action = round(7 * response)
             perform_action(individual, action)
 
-            individual[4] -= 1
-            if individual[4] == 0:
-                population.remove(individual)
+            # TODO: Uncomment these lines to allow for selection
+            # and thus training of behavioural networks 
+
+            # individual[4] -= 1
+            # if individual[4] == 0:
+                # population.remove(individual)
 
         for i in range(len(food)):
             pygame.draw.rect(screen, food_color, (food[i][0], food[i][1], 2, 2))
@@ -271,11 +265,11 @@ if __name__  == '__main__':
         meanTime = np.mean(simulation_time)
 
         # Caveman solution to print data to console, remove later
-        # os.system('cls' if os.name == 'nt' else 'clear')
-        # print('Time: {time}\nGeneration: {generation}\nAverage iteration time: {avgtime}'.format(
-            # time = time_elapsed, 
-            # generation = generation_count, 
-            # avgtime = meanTime
-        # ))
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print('Time: {time}\nGeneration: {generation}\nAverage iteration time: {avgtime}'.format(
+            time = time_elapsed, 
+            generation = generation_count, 
+            avgtime = meanTime
+        ))
 
         time_elapsed += 1
