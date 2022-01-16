@@ -1,19 +1,5 @@
-#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
-#
-#
-#       Kári Hlynsson, 2021-2022.
-#       Feel free to use! :)
-#       
-#       For more info on how this script works and what it aims
-#       to demonstrate, checkout the README.md as well as my blog 
-#       post!
-#
-#       https://github.com/lvthnn/SimEVO
-#
-#
-#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
-
 #!/usr/bin/env python3
+
 import pygame, random as rand, math, time, numpy as np, os
 
 import behaviournet
