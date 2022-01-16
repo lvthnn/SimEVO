@@ -1,0 +1,2 @@
+16/01/2022 04:13 GMT
+Playing with rand.seed parameter results in reproducible organism behaviour (aa weights are the same)
