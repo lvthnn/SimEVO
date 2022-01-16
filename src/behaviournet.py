@@ -8,7 +8,7 @@ import numpy as np, random as rand
 import time
 
 # For reproducibility
-rand.seed(18192)
+# rand.seed(18192)
 
 # Contains single-letter amino acid abbreviations
 amino_acids = [

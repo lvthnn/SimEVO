@@ -27,7 +27,7 @@ from behaviournet import BehaviourNet
 
 # Pygame setup
 pygame.init()
-size = width, height = 800, 800
+size = width, height = 800, 800 
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption('Evolutionary simulation')
 
@@ -37,7 +37,7 @@ gene_length = 8763
 aa_weights = behaviournet.initialize()
 
 # Food color in Pygame
-food_color = (0, 255, 0)
+food_color = (58, 97, 82)
 ind_color = (0, 0, 0)
 
 # Stores all entities, allows for faster searches based
@@ -55,7 +55,7 @@ generation_time = 1200
 time_elapsed = 0
 generation_count = 1
 simulation_time = []
-environmental_difficulty = 8
+environmental_difficulty = 7
 num_food = math.ceil(environmental_difficulty * pop_size_init) 
 
 #=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
@@ -182,6 +182,8 @@ for i in range(num_food):
 # Individual operations
 def move(individual, movekey):
     # TODO: This does not update entity field
+    # Implement entity field update to allow
+    # for sensory input of individuals,
     movement = moveset[movekey]
     x = individual[0] + movement[0]
     y = individual[1] + movement[1]
@@ -202,7 +204,7 @@ def scan_surroundings(individual):
         scany = y + scan[1]
         entity_current = 0
 
-        if scanx - 1 <= width - 1 and scany - 1 <= height - 1:
+        if abs(scanx - 1) <= width - 1 and abs(scany - 1) <= height - 1:
             entity_current = entity_field[scanx - 1][scany - 1]
 
         if entity_current != 0:
@@ -234,7 +236,7 @@ if __name__  == '__main__':
 
         # Get time at the start of simulation iteration
         startTime = time.time()
-        screen.fill((80, 80, 80))
+        screen.fill((180, 180, 180))
 
         for individual in population:
             pygame.draw.rect(screen, ind_color, (individual[0], individual[1], 2, 2))
