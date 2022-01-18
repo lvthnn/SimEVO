@@ -23,7 +23,7 @@ gene_length = 8763
 aa_weights = behaviournet.initialize()
 
 # Food color in Pygame
-food_color = (58, 97, 82)
+food_color = (92, 140, 44)
 ind_color = (0, 0, 0)
 
 # Stores all entities, allows for faster searches based
