@@ -10,6 +10,8 @@ This does not implicate in which direction the individual must move in but indic
 
 Use raycasting for sensory mapping. Each individual raycasts in an elliptical area $A$, when a collision is detected it registers the object type (individual or food) and feeds it into the NN. The behavioural networks outputs polar coordinate $O = (\Delta v, \Delta \theta)$ which represents change in velocity and change in forward facing angle.
 
-![image-20220121213546083](C:\Users\karih\AppData\Roaming\Typora\typora-user-images\image-20220121213546083.png)
+
 
 Divide environment into chunks to allow for localization and easier input mapping.
+
+![image](https://user-images.githubusercontent.com/63433562/150603542-8d6083df-910a-45e3-9456-7e2d689fdef8.png)
