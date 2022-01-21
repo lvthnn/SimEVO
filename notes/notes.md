@@ -10,3 +10,4 @@ Currently we are using scanset grid for input mapping into NN. We might consider
 
 This does not implicate in which direction the individual must move in but indicates which zone is "most abundant in food"
 
+![image](https://user-images.githubusercontent.com/63433562/150600593-c5def542-8c97-4253-b650-8e93e3f489a2.png)
