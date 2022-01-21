@@ -44,7 +44,7 @@ dict_aa = {}
 # Initializes amino acid weight table
 def initialize():
     for aa in amino_acids:
-        dict_aa[aa] = rand.uniform(-2, 2) 
+        dict_aa[aa] = rand.uniform(-1, 1) 
     return str(dict_aa)
 
 # Activation methods for behavioural net
@@ -123,22 +123,26 @@ class BehaviourNet:
         ]
 
 if __name__ == '__main__':
+    print('Initializing test run...')
     initialize()
     bases = ['A', 'C', 'G', 'T']
     gene_length = 8883
     gene = ''.join(rand.choices(bases, k = gene_length))
+
+    print(dict_aa)
 
     behaviour_nsx = BehaviourNet(gene)
     behaviour_nsx.calculate_model_params()
 
     sample_input = np.random.rand(144,)
     behaviour_nsx.feedforward(sample_input)
-    # Check for correct dimensions
-    # print(behaviour_nsx._params[0][0])
-    # print(np.shape(behaviour_nsx._params[0][1]))
 
-    # print(np.shape(behaviour_nsx._params[1][0]))
-    # print(np.shape(behaviour_nsx._params[1][1]))
+    # Check for correct dimensions
+    print(behaviour_nsx._params[0][0])
+    print(np.shape(behaviour_nsx._params[0][1]))
+
+    print(np.shape(behaviour_nsx._params[1][0]))
+    print(np.shape(behaviour_nsx._params[1][1]))
 
     time.sleep(1000)
 

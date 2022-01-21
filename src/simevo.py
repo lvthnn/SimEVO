@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import pygame, random as rand, math, time, numpy as np, os
+import pygame, random as rand, math, numpy as np
 
 import behaviournet
 from behaviournet import BehaviourNet
@@ -165,7 +165,6 @@ for i in range(num_food):
 #
 #=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
 
-# Individual operations
 def move(individual, movekey):
     # TODO: This does not update entity field
     # Implement entity field update to allow
@@ -177,8 +176,12 @@ def move(individual, movekey):
     individual[0] = x
     individual[1] = y
 
-
 def scan_surroundings(individual):
+    # TODO: Optimize search algorithms for
+    # surroundings scan
+    # 0 = EMPTY TILE
+    # 1 = FOOD
+    # 2 = INDIVIDUAL
     x = individual[0]
     y = individual[1]
 
@@ -221,7 +224,7 @@ if __name__  == '__main__':
             if event.type == pygame.QUIT: running = False
 
         # Get time at the start of simulation iteration
-        startTime = time.time()
+        # startTime = time.time()
         screen.fill((180, 180, 180))
 
         for individual in population:
@@ -247,17 +250,3 @@ if __name__  == '__main__':
 
 
         pygame.display.update()
-        
-        # Append total time to array
-        simulation_time.append(time.time() - startTime)
-        meanTime = np.mean(simulation_time)
-
-        # Caveman solution to print data to console, remove later
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print('Time: {time}\nGeneration: {generation}\nAverage iteration time: {avgtime}'.format(
-            time = time_elapsed, 
-            generation = generation_count, 
-            avgtime = meanTime
-        ))
-
-        time_elapsed += 1
