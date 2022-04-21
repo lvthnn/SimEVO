@@ -12,6 +12,34 @@ Use raycasting for sensory mapping. Each individual raycasts in a conical area $
 
 ![image-20220122031745310](https://user-images.githubusercontent.com/63433562/150623119-4879b45b-1156-445e-a201-f2dd99fc0f67.png)
 
-The conic area $A$ which organisms use to map their surroundings and feed into the network has the span $S_\theta = \theta_{\text{max}} - \theta_{\text{min}} = x \text{\: rad}$. The visual field resolution is defined by the integer $j$ which divides $A$ into subsections $A_1, \ldots, A_j$ with corresponding radians on the conic arch, $\theta_1, \ldots, \theta_j$. As $j \to \infty$, we gain higher degrees of movement and more sensory mapping capability.
+The conic area $A$ which organisms use to map their surroundings and feed into the network has the span $S_\theta = \theta_{\text{max}} - \theta_{\text{min}} = x \text{\: rad}$. The visual field resolution is defined by the integer $j$ which divides $A$ into subsections $A_1, \ldots, A_j$ with corresponding radians on the conic arch, $\theta_1, \ldots, \theta_j$. As $j \to \infty$, we gain higher degrees of movement and more sensory mapping capability at the expense of performance.
 
 Divide environment into chunks to allow for localization and easier input mapping.
+
+## 10.04.2022
+
+### Chunks
+
+Let $S$ be the radian of the organism FOV and $C$ be any given chunk within the environment. The subset $O$ (outside) of $C$ is the set where any section of the organisms FOV lands outside the chunk and $I$ (inside) is the subset where an organism's entire FOV is contained within the chunk no matter its orientation.
+$$
+\mathbb P(O) = \frac{\textsf{area}(O)}{\textsf{area}(O) + \textsf{area}(I)}
+$$
+**Challenge.** Find chunk size that minimizes the probability of organisms FOV landing outside of chunk. Requires that we determine regions $O$ and $I$.
+
+### Raycasting
+
+
+
+Have $d \in [0;1]$. When the food or the entity is just at the limit of the FOV, its value of $d$ is $0$. Let $d_m$ be the maximum distance of an entity 
+
+# Notes on meeting 11. april
+
+## Raycasting and sensory mapping
+
+Ideally, inputs into the behavioural network of an organism is between 0 and 1. The sensory map needs to include entity type and distance from the organism. We denote the distance using $d$ as it is relevant in the following passage.
+
+The maximum distance $d_M$ an entity can be from the organism equals the length of the radius of the sector which forms the organism's field of view. Let $E$ be some entity present in the organism's field of view. Under the assumption that all entities within the environment are represented by circles, we denote the radius of entity $E$ as $r_E$. We have for a given ray $\rho_i \in [\rho_1, \ldots, \rho_n]$ that $E$ collides with the ray iff
+$$
+\textsf{dist}(E, \rho_i) \leq r_E
+$$
+where $\textsf{dist}(E, \rho_i)$ is the function which returns the distance between the point location $E = (x,y)$ and the line $\rho_i$.

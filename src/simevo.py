@@ -7,7 +7,7 @@ from behaviournet import BehaviourNet
 
 #=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
 # 
-#   globals
+#   Globals
 #
 #=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
 
@@ -31,7 +31,7 @@ ind_color = (0, 0, 0)
 entity_field = np.empty(size, dtype = int)
 
 # Population metrics 
-pop_size_init = 50
+pop_size_init = 100
 population = []
 mutation_rate = 0.05
 individual_energy = 400
@@ -42,11 +42,11 @@ time_elapsed = 0
 generation_count = 1
 simulation_time = []
 environmental_difficulty = 7
-num_food = math.ceil(environmental_difficulty * pop_size_init) 
+num_food = math.ceil(environmental_difficulty * pop_size_init)
 
 #=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
 # 
-#   operation sets 
+#   Operation sets 
 #
 #=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
 
@@ -161,7 +161,7 @@ for i in range(num_food):
 
 #=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
 # 
-#   individual methods 
+#   Individual methods 
 #
 #=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
 
@@ -178,7 +178,7 @@ def move(individual, movekey):
 
 def scan_surroundings(individual):
     # TODO: Optimize search algorithms for
-    # surroundings scan
+    # surroundings scan:
     # 0 = EMPTY TILE
     # 1 = FOOD
     # 2 = INDIVIDUAL
@@ -186,7 +186,6 @@ def scan_surroundings(individual):
     y = individual[1]
 
     scan_result = []
-
 
     for scan in scanset:
         scanx = x + scan[0]
@@ -213,7 +212,7 @@ def perform_action(ind, actionID):
 
 #=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
 # 
-#   main loop 
+#   Main loop 
 #
 #=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=
 
@@ -227,6 +226,7 @@ if __name__  == '__main__':
         # startTime = time.time()
         screen.fill((180, 180, 180))
 
+        # O(N^2)
         for individual in population:
             pygame.draw.rect(screen, ind_color, (individual[0], individual[1], 2, 2))
            
