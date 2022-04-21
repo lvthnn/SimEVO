@@ -145,17 +145,21 @@ some rayline emitted by an organism and an entity in the field, a metric describ
 \par To begin the formalization, we consider how to construct such a set of rays and what qualities it has.
 
 \begin{definition}[Ray set]
-    Let $\lambda \in \mathbb R^+$ and $t \in [0; 2\pi]$. Further suppose that an organism $O$ in an environment $\mathscr E$ with a present entity set $\mathbf E$ has the forward
+    Let $\lambda \in \mathbb R^+$. Suppose that an organism $O$ in an environment $\mathscr E$ with a present entity set $\mathbf E$ has the forward
     facing angle $\theta$. We define the \emph{ray set} of the organism as the linearly spaced vector $\mathbf R = \{r_1, \ldots, r_{\nu_{\mathbf R}}\}$ from $\left[\theta + \Delta_{\mathbf R}; \theta - \Delta_{\mathbf R}\right]$
     numbering $\nu_{\mathbf R}$ elements ($\nu_{\mathbf R}$ is called the \emph{ray number}). Furthermore, we define the quantity $\mathcal S_{\mathbf R} = 2 \Delta_{\mathbf R}$ as the \emph{span} of the ray set.
 \end{definition}
 
-\noindent
-We now consider a function which returns the point locations of the rays along the sensory field from which we can construct line segments originating from the organism,
-yielding the raylines.
-
-\begin{definition}[Ray map function]
-   The ray map function $\mathcal R_{\lambda}: \mathbf R \to \mathscr E$ is the bijective function from the set of rays $\mathbf R$ to the 
+\begin{definition}[Ray map]
+   The vector function $R_{\lambda}$ is the \emph{ray map} from the ray set $\mathbf R$ to the family of vectors bounded within the organism's sensory field.
+   Furthermore, it is defined by
+   \[
+        R_{\lambda}(r) = \left\langle R_\lambda^x, R_\lambda^y \right\rangle = \langle \cos r_i, \sin r_i \rangle
+   \]
+   Where $\lambda$ is the \emph{maximum sensory depth} such that
+   \[
+        \left|R_{\lambda}(r)\right|^2 = \left(R_\lambda^x\right)^2 + \left(R_\lambda^y\right)^2 = \lambda^2
+   \]
 \end{definition}
 
 \section{Simulation phases}
@@ -166,6 +170,8 @@ the reproduction itself an extreme pain (organisms having to find each other, et
 occurs but rather "off screen" where its just a bunch of calculations really.
 \par On the other hand it might make for some really interesting data if we were to assign individuals genders and they would map their current energy level and the gender of individuals
 in their sensory field and allow for them to reproduce "in the field" lol. Let me know what you think!
+
+
 
 \section{Runtime optimization}
 One of the run-ins we've had so far is determining how to design the sensory mapping capabilities of organisms within the environment. By sensory mapping, I am referring to the organism's ability to sense its
@@ -222,18 +228,29 @@ as can be seen in the picture below.
 
 \begin{figure}[ht!]
     \centering
-    \includegraphics[width=0.6\textwidth]{img/mcl_simulation.png}
+    \includegraphics[width=0.58\textwidth]{img/mcl_simulation.png}
     \caption{$\mathcal L_{\max}$ by population size and number of chunks}
 \end{figure}
 
 \section{Adjacent chunk loading and critical boundary}
-We define the \emph{critical boundary} of a chunk $C_i$ as the area in which the sensory field of a organism with a range of possible
-positions intersects an adjacent chunk.
-
+Although the chunk system minimizes the calculations needed to check for collisions with a ray, it introduces the risk of an entity
+escaping an organisms sensory field despite being contained within it. This is due to the fact that the CBS only performs calculations
+concerning entities contained within the chunk itself without paying attention to the contents of the sensory field.
+\par A failsafe way to ensure that all entities within the sensory field are recognized is by introducing adjacent chunk loading (henceforth ACL)
+which loads the adjacent chunk given that an organisms field of view intersects an adjoining chunk.
+\par Expanding on this concept, we loosely define the \emph{critical boundary} as the subset of the environment, denoted $\mathcal C_{\mathscr E}$,
+which suffices the condition that the sensory field of any organism contained within it intersect an adjoining chunk, regardless of the organism's position
+and orientation.
 
 \section{Performance comparison}
 In this section we compare the CBS versus non-CBS runtime performance to obtain a metric description
 of performance improvements as a result of the CBS implementation.
+
+\subsection{Amortized cost of non-CBS implementation}
+
+\subsection{Amortized cost of CBS implementation}
+
+\subsection{Comparative analysis}
 \begin{algorithm}[ht!]
     \caption{Comparisonal simulation of CBS versus non-CBS runtime}
     \begin{algorithmic}[1]
@@ -252,14 +269,13 @@ of performance improvements as a result of the CBS implementation.
         \EndProcedure
     \end{algorithmic}
 \end{algorithm}
-\par
-\noindent \textsc{Note:} This algorithm does not take ACL into account, which we need to implement.
 
 \appendix
 
 \newpage
 
 \chapter{Preliminaries}
+\section{Probability theory and statistics}
 \begin{definition}[Probability]
     Let $\omega$ be some event from the probability space $\Omega$. We represent
     the probability of the event $\omega$ occuring using the notation $\text{Pr}\{\omega\} = x$
@@ -284,5 +300,7 @@ of performance improvements as a result of the CBS implementation.
     Let $X$ be a random variable. When it follows for example the Poisson distribution, we write
     $X \sim \text{Poisson}(\lambda)$.
 \end{definition}
+
+\section{Neural networks}
 
 \end{document}
