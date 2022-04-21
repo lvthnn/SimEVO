@@ -234,7 +234,7 @@ if __name__  == '__main__':
             # feedback. Formatted as integer ranging from [0,7].
             surroundings = scan_surroundings(individual)
             response = individual[5].feedforward(surroundings)
-            
+
             action = round(7 * response)
             perform_action(individual, action)
 

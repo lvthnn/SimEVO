@@ -16,6 +16,25 @@
 
 \usepackage{algorithm}
 \usepackage{algpseudocodex}
+\renewcommand\algorithmicprocedure{\textbf{procedure}}
+\newcommand{\algorithmicendprocedure}{\algorithmicend\ \algorithmicprocedure}
+\makeatletter
+\newcommand\PROCEDURE[3][default]{%
+  \ALC@it
+  \algorithmicprocedure\ \textsc{#2}(#3)%
+  \ALC@com{#1}%
+  \begin{ALC@prc}%
+}
+\newcommand\ENDPROCEDURE{%
+  \end{ALC@prc}%
+  \ifthenelse{\boolean{ALC@noend}}{}{%
+    \ALC@it\algorithmicendprocedure
+  }%
+}
+\newenvironment{ALC@prc}{\begin{ALC@g}}{\end{ALC@g}}
+\makeatother
+
+
 \usepackage[hang,flushmargin]{footmisc}
 
 \pgfplotsset{compat=1.17}
@@ -84,7 +103,7 @@
 
 \newpage
 
-\chapter{Theoretical Basis}
+\chapter{Theoretical basis}
 \section{Note}
 Hello there Jun
 
@@ -98,9 +117,9 @@ None of this final and subject to changes as we cooperate on this project.
 I also want to apologize for the common abbreviatons section, its a load of cowdung
 but I feel we will need this to make our lives easier later on.
 
-
-\chapter{Model Outline}
-\section{Model Outline}
+\chapter{Model outline}
+\section{Model outline}
+\subsection{Overview}
 The aim of the model is to study the natural evolution of neural pathways in a population of organism
 when exposed to survivalistic conditions. A rigid logical and syntactical foundation will make all succeeding
 articulation on the model parameters and attributes easier. We therefore dedicate this first section towards
@@ -108,7 +127,7 @@ establishing a foundation of terms and definitions which we build on later.
 \par The most critical aspects of the model we define here is the \emph{environment} and the \emph{entities} contained
 therein. Neglecting any elevation, we define the environment as the bounded subset of the Cartesian plane, which we symbolize
 $\mathscr E$ \footnote{Although elevation certainly plays a vital role in the foraging patterns of organisms in natural environments, we refrain
-from its implementation as it only adds a level of complexity to the model design while minimally increasing simulation findings.}.
+from its implementation as it only adds a level of complexity to the model design while having no immediate benefit for the simulation.}.
 \par Contained within the environment are \emph{entities} which we can think of as actors within the simulation. The two types that occur
 in this model are \emph{organisms} and \emph{food}. Again, a simple intuitive definition is that the organism is an individual of a species
 present within the environment and nutrition is the foodstuffs which it consumes to gain energy and thus survive.
@@ -116,9 +135,30 @@ present within the environment and nutrition is the foodstuffs which it consumes
 and consume food to gain energy. On the other hand, food has none of these qualities. We represent an entity as the object $E$, while organisms are denoted
 $O$ and food by $F$.
 
-\section{Simulation Phases}
-\subsection{Foraging phase}
-\subsection{Reproductive phase}
+\subsection{Sensory mapping of organisms}
+One of the key characteristics of organisms is that they are able to sense their proximal surroundings and base their succeeding actions on the information they
+have gathered on the environment. In this section we aim to establish a mathematical and syntactical foundation describing the sensory capabilities of organisms
+which allows passing environmental data to the organism's neural network.
+\par A convenient and well established method of sensory mapping is obtained through the use of \emph{raycasting} or \emph{raylines}, where several line segments
+originating from the organism's point location are used as collision sensors which serve as sensors for distance. By calculating the distance of the intersection between
+some rayline emitted by an organism and an entity in the field, a metric describing the \emph{sensory depth} from the organism to another entity is established.
+\par To begin the formalization, we consider how to construct such a set of rays and what qualities it has.
+
+\begin{definition}[Ray set]
+    Let $\lambda \in \mathbb R^+$ and $t \in [0; 2\pi]$. Further suppose that an organism $O$ in an environment $\mathscr E$ with a present entity set $\mathbf E$ has the forward
+    facing angle $\theta$. We define the \emph{ray set} of the organism as the linearly spaced vector $\mathbf R = \{r_1, \ldots, r_{\nu_{\mathbf R}}\}$ from $\left[\theta + \Delta_{\mathbf R}; \theta - \Delta_{\mathbf R}\right]$
+    numbering $\nu_{\mathbf R}$ elements ($\nu_{\mathbf R}$ is called the \emph{ray number}). Furthermore, we define the quantity $\mathcal S_{\mathbf R} = 2 \Delta_{\mathbf R}$ as the \emph{span} of the ray set.
+\end{definition}
+
+\noindent
+We now consider a function which returns the point locations of the rays along the sensory field from which we can construct line segments originating from the organism,
+yielding the raylines.
+
+\begin{definition}[Ray map function]
+   The ray map function $\mathcal R_{\lambda}: \mathbf R \to \mathscr E$ is the bijective function from the set of rays $\mathbf R$ to the 
+\end{definition}
+
+\section{Simulation phases}
 For your contemplation (Jun, if you're reading this): I've thought of dividing the simulation into a \emph{foraging phase}, where organisms roam around and collect food.
 If they don't get any or deplete their energy, they die. Once the foraging phase is over, the \emph{reproductive phase} starts, where remaining energy is a measure of how
 likely organisms are to find a partner and reproduce (this is of course a simplication, there are many other ways to go about this I'm sure). This way, we don't have to make
@@ -126,8 +166,6 @@ the reproduction itself an extreme pain (organisms having to find each other, et
 occurs but rather "off screen" where its just a bunch of calculations really.
 \par On the other hand it might make for some really interesting data if we were to assign individuals genders and they would map their current energy level and the gender of individuals
 in their sensory field and allow for them to reproduce "in the field" lol. Let me know what you think!
-\par Of course, if this fails to capture your attention (which I totally understand btw, I tend to glimpse through text without realizing what I'm reading, I'll definitely show this paragraph to you
-the next time we talk, making for a really awkward $x$ seconds, depending on how fast you read.)
 
 \section{Runtime optimization}
 One of the run-ins we've had so far is determining how to design the sensory mapping capabilities of organisms within the environment. By sensory mapping, I am referring to the organism's ability to sense its
@@ -138,7 +176,7 @@ and check for the entity type present in the tile. This is not possible in the f
 \par An excellent idea you came up with was the idea of partitioning the environment into separate chunks, which organisms restrict their sensory mapping to unless there sensory fields intersect another adjacent chunk
 (more on that later). We will start by discussing this idea, which as you will see, will be of great use.
 
-\subsection{Chunk partitioning}
+\subsection{Chunk system}
 In this section, we will be doing a mathematical analysis of the chunk system to see how it will benefit the simulation. To start off, we inspect what fundamental laws apply to this system.
 
 \begin{proposition}
@@ -184,14 +222,38 @@ as can be seen in the picture below.
 
 \begin{figure}[ht!]
     \centering
-    \includegraphics[width=\textwidth]{img/simulation_result.jpg}
-    \caption{Effect of $n$ and $k$ on $\mathcal L_{\max}$}
+    \includegraphics[width=0.6\textwidth]{img/mcl_simulation.png}
+    \caption{$\mathcal L_{\max}$ by population size and number of chunks}
 \end{figure}
 
-\subsection{Adjacent chunk loading}
-The following algorithm can be easily 
+\section{Adjacent chunk loading and critical boundary}
+We define the \emph{critical boundary} of a chunk $C_i$ as the area in which the sensory field of a organism with a range of possible
+positions intersects an adjacent chunk.
+
 
 \section{Performance comparison}
+In this section we compare the CBS versus non-CBS runtime performance to obtain a metric description
+of performance improvements as a result of the CBS implementation.
+\begin{algorithm}[ht!]
+    \caption{Comparisonal simulation of CBS versus non-CBS runtime}
+    \begin{algorithmic}[1]
+        \Require The chunk set $\mathbf C$ which partitions $\mathscr E$ into $k$ disjoint
+        subsets $C_1, \ldots, C_k$ where $|\mathbf C| = k$. Entity set $\mathbf E$ within $\mathscr E$
+        where $|\mathbf E| = N$ with organism subset $\mathbf O$ such that $|\mathbf O| = n$.
+        \Procedure{CbsComparison}{$\mathbf C$, $\mathbf E$}
+        \State cost$_{\text{CBS}} \leftarrow 0$ \Comment{Amortized CBS cost}
+        \State cost$_{\text{non-CBS}} \leftarrow n(N - 1)$ \Comment{Amortized non-CBS cost}
+        \For{$C_i \in \mathbf C$}
+            \State Assign $C_i$ chunk load $\mathcal L_{C_i} \sim \text{Bin}(N, 1/k)$ by random process
+            \State $n_{O \in C_i} = |\{O \in \mathbf O \mid O \in C_i\}|$ \Comment{$n_{O \in C_i} \leq n$}
+            \State cost$_{\text{CBS}} \leftarrow$ cost$_{\text{CBS}} \mathrel{+}= n_{O \in C_i} (\mathcal L_{C_i} - 1)$
+        \EndFor
+        \State cost$_{\text{CBS}} \leftarrow$ cost$_{\text{CBS}} \mathrel{+}= k$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+\par
+\noindent \textsc{Note:} This algorithm does not take ACL into account, which we need to implement.
 
 \appendix
 

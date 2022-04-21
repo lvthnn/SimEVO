@@ -110,6 +110,7 @@ class BehaviourNet:
         for e in arr_seq:
             translate.append(dict_aa[e])
 
+
         w_mu = np.array_split(translate[:2880], 20)
         b_mu = translate[2880:2900]
         w_o = translate[2900:2920]
