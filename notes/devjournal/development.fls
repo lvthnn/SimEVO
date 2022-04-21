@@ -1422,6 +1422,7 @@ INPUT /usr/local/texlive/2021/texmf-dist/fonts/vf/public/newtx/ntxmi7.vf
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/newtx/NewTXMI7.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/newtx/stxscr.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/newtx/ntx-Bold-tlf-t1.tfm
+INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/newtx/ntx-Regular-tlf-sc-t1.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/newtx/t1ntxsups.fd
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/newtx/t1ntxsups.fd
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/newtx/t1ntxsups.fd
