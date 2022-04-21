@@ -7,6 +7,6 @@
 \contentsline {subsection}{\numberline {2.2.2}Reproductive phase}{6}{subsection.2.2.2}%
 \contentsline {section}{\numberline {2.3}Runtime optimization}{6}{section.2.3}%
 \contentsline {subsection}{\numberline {2.3.1}Chunk partitioning}{7}{subsection.2.3.1}%
-\contentsline {subsection}{\numberline {2.3.2}Adjacent chunk loading}{8}{subsection.2.3.2}%
-\contentsline {section}{\numberline {2.4}Performance comparison}{8}{section.2.4}%
-\contentsline {chapter}{\numberline {A}Preliminaries}{9}{appendix.A}%
+\contentsline {subsection}{\numberline {2.3.2}Adjacent chunk loading}{9}{subsection.2.3.2}%
+\contentsline {section}{\numberline {2.4}Performance comparison}{9}{section.2.4}%
+\contentsline {chapter}{\numberline {A}Preliminaries}{10}{appendix.A}%
