@@ -13,6 +13,8 @@
 \usepackage{newtxtext, newtxmath}
 \usepackage{tabularx}
 \usepackage{authblk}
+\usepackage{caption}
+\usepackage[most]{tcolorbox}
 
 \usepackage{algorithm}
 \usepackage{algpseudocodex}
@@ -36,6 +38,8 @@
 
 
 \usepackage[hang,flushmargin]{footmisc}
+\captionsetup[figure]{labelfont=bf}
+
 
 \pgfplotsset{compat=1.17}
 \setlength{\jot}{1em}
@@ -76,15 +80,14 @@
     \begin{tabularx}{\textwidth}{l X}
       \textsc{Abbreviation} & \textsc{Definition} \\
       $\mathscr E = [0;w] \times [0;h]$ & Environment with \emph{width} $w$ and \emph{height} $h$. The environment
-                                           can also be expressed as the set of locations $\ell$ such that $\mathscr E = \{\ell := \langle x_i, y_j \rangle \mid x_i \in [0;w] \land y_j \in [0;h]\rangle\}$ \\
+                                           can also be expressed as the set of locations $\ell$ such that $\mathscr E = \{\ell := (x, y) \mid x \in [0;w] \land y \in [0;h]\}$ \\
       $n$                                & Size of the population. \\
       $E = (e_x, e_y)$                  & An entity with $x$ and $y$ coordinates in the environment such that $\ell_{E} \in \mathscr E$ ($\ell_E$ is the location which corresponds to the entity's location) \\
       $\mathbf C = \{C_1, \ldots, C_k\}$ & The partition of $\mathscr E$ into $k$ chunks $C_1, \ldots, C_k$ such that $\bigcap_{i = 1}^k C_i = \emptyset$ and $\bigcup_{i = 1}^k C_i = \mathscr E$, i.e. the
                                             \emph{set of chunks} $\mathbf C$ forms a complete partition of $\mathscr E$. \\
       $\mathbf O = \{O_1, \ldots, O_n\}$ & The population, the set of all organisms present within the environment. \\
-      $\theta_R = \frac{1}{\delta_R}$    & An organism's \emph{ray resolution}. The ray resolution is defined as the inverse of the angle between the uniformly spaced sensory rays, $\delta_R$ which construct 
-                                           the organism's sensory field. The higher the value of $\theta_R$, the more rays in the sensory field and vice versa. \\
-      $\mathcal P: \mathbf O \to \ell$   & Positional mapping. Returns vector representation of an entity's location at some point in time. Note that $\mathcal P$ is a random variable.
+      $\mathcal P: \mathbf O \to \mathscr E$   & Positional mapping. Returns point representation of an entity's location within $\mathscr E$. Note that $\mathcal P$ is a random variable, which we will
+      discuss in more detail in the runtime optimization section. \\
     \end{tabularx}
 \end{table}
 
@@ -134,6 +137,71 @@ present within the environment and nutrition is the foodstuffs which it consumes
 \par Entities can be divided into two types: \emph{organisms} and \emph{food}. What follows is simple: organisms are motile, can sense their surroundings
 and consume food to gain energy. On the other hand, food has none of these qualities. We represent an entity as the object $E$, while organisms are denoted
 $O$ and food by $F$.
+\begin{figure}
+    \centering 
+    \begin{tcolorbox}[colframe = black, colback = white, sharp corners]
+        \begin{tikzpicture}[scale = 1, x=0.6pt,y=0.6pt,yscale=-1,xscale=1]
+            %uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+            %Shape: Circle [id:dp5046571963675113] 
+            \draw  [fill={rgb, 255:red, 232; green, 210; blue, 255 }  ,fill opacity=1 ] (169,165.75) .. controls (169,157.05) and (176.05,150) .. (184.75,150) .. controls (193.45,150) and (200.5,157.05) .. (200.5,165.75) .. controls (200.5,174.45) and (193.45,181.5) .. (184.75,181.5) .. controls (176.05,181.5) and (169,174.45) .. (169,165.75) -- cycle ;
+            %Shape: Pie [id:dp6264332812271176] 
+            \draw   (222.96,129.08) .. controls (225.08,130.35) and (227.1,131.82) .. (229.01,133.51) .. controls (246.31,148.81) and (247.57,175.65) .. (231.82,193.45) .. controls (230.18,195.31) and (228.42,196.99) .. (226.56,198.5) -- (200.5,165.75) -- cycle ;
+            %Straight Lines [id:da5980112219613951] 
+            \draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ]   (200.5,165.75) -- (241,165.27) ;
+            \draw [shift={(243,165.25)}, rotate = 179.33] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]    (4.37,-1.32) .. controls (2.78,-0.56) and (1.32,-0.12) .. (0,0) .. controls (1.32,0.12) and (2.78,0.56) .. (4.37,1.32)   ;
+            %Curve Lines [id:da9973990148186489] 
+            \draw  [dash pattern={on 4.5pt off 4.5pt}]  (2,150) .. controls (42,120) and (103,168) .. (169,165.75) ;
+            %Shape: Triangle [id:dp44009432397165527] 
+            \draw  [fill={rgb, 255:red, 179; green, 249; blue, 182 }  ,fill opacity=1 ] (324.11,89) -- (338,111) -- (311,111) -- cycle ;
+
+            %Shape: Triangle [id:dp35563504351381514] 
+            \draw  [fill={rgb, 255:red, 179; green, 249; blue, 182 }  ,fill opacity=1 ] (600.11,244) -- (614,266) -- (587,266) -- cycle ;
+
+            %Shape: Triangle [id:dp6587382072289927] 
+            \draw  [fill={rgb, 255:red, 179; green, 249; blue, 182 }  ,fill opacity=1 ] (585.11,47) -- (599,69) -- (572,69) -- cycle ;
+
+            %Shape: Triangle [id:dp8230417371681578] 
+            \draw  [fill={rgb, 255:red, 179; green, 249; blue, 182 }  ,fill opacity=1 ] (416.11,221) -- (430,243) -- (403,243) -- cycle ;
+
+            %Shape: Triangle [id:dp3619204635470774] 
+            \draw  [fill={rgb, 255:red, 179; green, 249; blue, 182 }  ,fill opacity=1 ] (121.11,55) -- (135,77) -- (108,77) -- cycle ;
+
+            %Shape: Triangle [id:dp9744597746822374] 
+            \draw  [fill={rgb, 255:red, 179; green, 249; blue, 182 }  ,fill opacity=1 ] (110.11,227) -- (124,249) -- (97,249) -- cycle ;
+
+            %Shape: Circle [id:dp2625952541482832] 
+            \draw  [fill={rgb, 255:red, 232; green, 210; blue, 255 }  ,fill opacity=1 ] (483.04,47.77) .. controls (489.39,53.72) and (489.71,63.68) .. (483.76,70.03) .. controls (477.81,76.38) and (467.85,76.7) .. (461.5,70.75) .. controls (455.15,64.8) and (454.83,54.83) .. (460.78,48.49) .. controls (466.73,42.14) and (476.7,41.82) .. (483.04,47.77) -- cycle ;
+            %Shape: Pie [id:dp25830448813204976] 
+            \draw   (472.89,112.22) .. controls (470.52,112.89) and (468.06,113.36) .. (465.52,113.6) .. controls (442.53,115.76) and (422.09,98.32) .. (419.87,74.66) .. controls (419.64,72.19) and (419.61,69.75) .. (419.78,67.36) -- (461.5,70.75) -- cycle ;
+            %Straight Lines [id:da5039204955567191] 
+            \draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ]   (461.5,70.75) -- (434.15,100.62) ;
+            \draw [shift={(432.8,102.1)}, rotate = 312.48] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]    (4.37,-1.32) .. controls (2.78,-0.56) and (1.32,-0.12) .. (0,0) .. controls (1.32,0.12) and (2.78,0.56) .. (4.37,1.32)   ;
+            %Curve Lines [id:da7361275969659062] 
+            \draw  [dash pattern={on 4.5pt off 4.5pt}]  (483,47.67) .. controls (512,16.67) and (562,36.67) .. (565,1.67) ;
+
+            % Text Node
+            \draw (5,8.4) node [anchor=north west][inner sep=0.75pt]  [font=\LARGE]  {$\mathscr{E}$};
+            % Text Node
+            \draw (320,97.4) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {F};
+            % Text Node
+            \draw (596,252.4) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {F};
+            % Text Node
+            \draw (581,55.4) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {F};
+            % Text Node
+            \draw (412,229.4) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {F};
+            % Text Node
+            \draw (117,63.4) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {F};
+            % Text Node
+            \draw (106,235.4) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize]  {F};
+            % Text Node
+            \draw (246,158) node [anchor=north west][inner sep=0.75pt]  [font=\small]  {$\theta$};
+            % Text Node
+            \draw (177,157.07) node [anchor=north west][inner sep=0.75pt]    {$O$};
+        \end{tikzpicture}
+    \end{tcolorbox}
+    \caption{An illustration of the model} \label{fig:model_illustration}
+\end{figure}
 
 \subsection{Sensory mapping of organisms}
 One of the key characteristics of organisms is that they are able to sense their proximal surroundings and base their succeeding actions on the information they
@@ -141,12 +209,11 @@ have gathered on the environment. In this section we aim to establish a mathemat
 which allows passing environmental data to the organism's neural network.
 \par A convenient and well established method of sensory mapping is obtained through the use of \emph{raycasting} or \emph{raylines}, where several line segments
 originating from the organism's point location are used as collision sensors which serve as sensors for distance. By calculating the distance of the intersection between
-some rayline emitted by an organism and an entity in the field, a metric describing the \emph{sensory depth} from the organism to another entity is established.
-\par To begin the formalization, we consider how to construct such a set of rays and what qualities it has.
+some rayline emitted by an organism and an entity in the field, a metric describing the \emph{sensory depth} from the organism to another entity is established. 
 
 \begin{definition}[Ray set]
     Let $\lambda \in \mathbb R^+$. Suppose that an organism $O$ in an environment $\mathscr E$ with a present entity set $\mathbf E$ has the forward
-    facing angle $\theta$. We define the \emph{ray set} of the organism as the linearly spaced vector $\mathbf R = \{r_1, \ldots, r_{\nu_{\mathbf R}}\}$ from $\left[\theta + \Delta_{\mathbf R}; \theta - \Delta_{\mathbf R}\right]$
+    facing angle $\theta$ (see figure \ref{fig:model_illustration}). We define the \emph{ray set} of the organism as the linear space vector $\mathbf R = \{r_1, \ldots, r_{\nu_{\mathbf R}}\}$ from $\left[\theta - \Delta_{\mathbf R}; \theta + \Delta_{\mathbf R}\right]$
     numbering $\nu_{\mathbf R}$ elements ($\nu_{\mathbf R}$ is called the \emph{ray number}). Furthermore, we define the quantity $\mathcal S_{\mathbf R} = 2 \Delta_{\mathbf R}$ as the \emph{span} of the ray set.
 \end{definition}
 
@@ -154,12 +221,23 @@ some rayline emitted by an organism and an entity in the field, a metric describ
    The vector function $R_{\lambda}$ is the \emph{ray map} from the ray set $\mathbf R$ to the family of vectors bounded within the organism's sensory field.
    Furthermore, it is defined by
    \[
-        R_{\lambda}(r) = \left\langle R_\lambda^x, R_\lambda^y \right\rangle = \langle \cos r_i, \sin r_i \rangle
+        R_{\lambda}(r) = \left\langle R_\lambda^x, R_\lambda^y \right\rangle = \langle \lambda \cos r_i, \lambda \sin r_i \rangle
    \]
-   Where $\lambda$ is the \emph{maximum sensory depth} such that
-   \[
-        \left|R_{\lambda}(r)\right|^2 = \left(R_\lambda^x\right)^2 + \left(R_\lambda^y\right)^2 = \lambda^2
-   \]
+    Where $\lambda$ is the \emph{maximum sensory depth}, i.e. the radius of the sensory field.
+\end{definition}
+
+\begin{remark}
+    Note that
+    \[
+        |R_\lambda(r)|^2 = \left(R_\lambda^x\right)^2 + \left(R_\lambda^y\right)^2 = \lambda^2
+    \]
+    The vector function is thus the parametrization of a circle sector in the range $\left[\theta - \Delta_{\mathbf R}; \theta + \Delta_{\mathbf R}\right]$
+    and the ray set $\mathbf R$ returns a finite collection of vectors with their endpoints located on the sector.
+\end{remark}
+
+\begin{definition}[Sensory field]
+    The sensory field of an organism $O$ is the set of vectors $\mathbf S = \{\vec{s}_1, \ldots, \vec{s}_{\nu_{\mathbf R}}\}$ which is returned by the ray map $R_\lambda$ acting on the
+    ray set $\mathbf R$. The \emph{maximum sensory depth} is the parameter $\lambda$ which describes the length of the vectors, i.e. $\forall \vec{s}_i \in \mathbf S: |\vec{s}_i| = \lambda$.
 \end{definition}
 
 \section{Simulation phases}
@@ -213,22 +291,20 @@ In this section, we will be doing a mathematical analysis of the chunk system to
     denotes the number of entities contained within the chunk. Immediate of proposition 1,
     we have that $\mathcal L \sim \text{Bin}(n, 1/k)$, where $n$ is the total number of entities
     in the environment. \footnote{Note that this assumes the uniform distribution of entities within
-    the environment, which is obviously true. This is because there is no logical restraint on where an
-    entity can be at any given time, i.e. there is not a consistent probabilistic hindrance in an entity having a certain position.}
+    the environment. While it not entirely safe to say that the distribution of entities is always uniform, we do so in order to create some upper bound for simulation time}
 \end{definition}
 
 \begin{figure}[ht!]
     \centering
-    \includegraphics[width=0.6\textwidth]{img/binomialdistribution.png}
+    \includegraphics[width=0.9\textwidth]{img/binomialdistribution.png}
     \caption{An example binomial distribution}
 \end{figure}
 
-\noindent It should come as no surprise that the ratio of chunks to the population size has some impact on the max chunk load,
-as can be seen in the picture below.
-
+\noindent The random variables $\mathcal L_{C_1}, \ldots, \mathcal L_{C_k}$ are dependent, which by inference leads to $\sum_{i = 1}^k \mathcal L_{C_i} = N$, where $|\mathbf E| = N$. Algorithm \ref*{cbs-costmodel} shows a method with which a amortized cost model can be simulated.
+\par The algorithm demands the assignment of $\mathcal L_{C_i}$ for chunks $C_i \in \mathbf C$ by a random process. However, given the nature of probabilistic distributions of dependent variables, 
 \begin{figure}[ht!]
     \centering
-    \includegraphics[width=0.58\textwidth]{img/mcl_simulation.png}
+    \includegraphics[width=0.9\textwidth]{img/mcl_simulation.png}
     \caption{$\mathcal L_{\max}$ by population size and number of chunks}
 \end{figure}
 
@@ -236,7 +312,7 @@ as can be seen in the picture below.
 Although the chunk system minimizes the calculations needed to check for collisions with a ray, it introduces the risk of an entity
 escaping an organisms sensory field despite being contained within it. This is due to the fact that the CBS only performs calculations
 concerning entities contained within the chunk itself without paying attention to the contents of the sensory field.
-\par A failsafe way to ensure that all entities within the sensory field are recognized is by introducing adjacent chunk loading (henceforth ACL)
+\par A way to ensure that all entities within the sensory field are recognized is by introducing adjacent chunk loading (henceforth ACL)
 which loads the adjacent chunk given that an organisms field of view intersects an adjoining chunk.
 \par Expanding on this concept, we loosely define the \emph{critical boundary} as the subset of the environment, denoted $\mathcal C_{\mathscr E}$,
 which suffices the condition that the sensory field of any organism contained within it intersect an adjoining chunk, regardless of the organism's position
@@ -252,22 +328,23 @@ of performance improvements as a result of the CBS implementation.
 
 \subsection{Comparative analysis}
 \begin{algorithm}[ht!]
-    \caption{Comparisonal simulation of CBS versus non-CBS runtime}
+    \caption{Algorithm for estimating amortized cost of CBS method}
     \begin{algorithmic}[1]
         \Require The chunk set $\mathbf C$ which partitions $\mathscr E$ into $k$ disjoint
         subsets $C_1, \ldots, C_k$ where $|\mathbf C| = k$. Entity set $\mathbf E$ within $\mathscr E$
         where $|\mathbf E| = N$ with organism subset $\mathbf O$ such that $|\mathbf O| = n$.
-        \Procedure{CbsComparison}{$\mathbf C$, $\mathbf E$}
+        \Procedure{CbsCostModel}{$\mathbf C$, $\mathbf E$}
         \State cost$_{\text{CBS}} \leftarrow 0$ \Comment{Amortized CBS cost}
-        \State cost$_{\text{non-CBS}} \leftarrow n(N - 1)$ \Comment{Amortized non-CBS cost}
         \For{$C_i \in \mathbf C$}
             \State Assign $C_i$ chunk load $\mathcal L_{C_i} \sim \text{Bin}(N, 1/k)$ by random process
-            \State $n_{O \in C_i} = |\{O \in \mathbf O \mid O \in C_i\}|$ \Comment{$n_{O \in C_i} \leq n$}
+            \State $N \mathrel{-}= \mathcal L_{C_i}$ \Comment{Since $\mathcal L_{C_1}, \ldots, \mathcal L_{C_k}$ are dependent r.v.}
+            \State $n_{O \in C_i} := |\{O \in \mathbf O \mid O \in C_i\}|$ \Comment{$n_{O \in C_i} \leq n$}
             \State cost$_{\text{CBS}} \leftarrow$ cost$_{\text{CBS}} \mathrel{+}= n_{O \in C_i} (\mathcal L_{C_i} - 1)$
         \EndFor
         \State cost$_{\text{CBS}} \leftarrow$ cost$_{\text{CBS}} \mathrel{+}= k$
         \EndProcedure
     \end{algorithmic}
+    \label{cbs-costmodel}
 \end{algorithm}
 
 \appendix
