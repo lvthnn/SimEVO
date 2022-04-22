@@ -10,7 +10,7 @@
 \usepackage{derivative}
 \usepackage{setspace}
 \usepackage{mathrsfs}
-\usepackage{newtxtext, newtxmath}
+%\usepackage{newtxtext, newtxmath}
 \usepackage{tabularx}
 \usepackage{authblk}
 \usepackage{caption}
@@ -51,12 +51,12 @@
 \affil[2]{University of Oxford, Department of Biology}
 \date{}
 
-\newtheorem{theorem}{Theorem}
-\newtheorem{corollary}{Corollary}
-\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{corollary}{Corollary}[chapter]
+\newtheorem{proposition}{Proposition}[chapter]
 
 \theoremstyle{definition}
-\newtheorem{definition}{Definition}
+\newtheorem{definition}{Definition}[chapter]
 \newtheorem*{remark}{Remark}
 
 \let\oldproofname=\proofname
@@ -221,7 +221,7 @@ some rayline emitted by an organism and an entity in the field, a metric describ
    The vector function $R_{\lambda}$ is the \emph{ray map} from the ray set $\mathbf R$ to the family of vectors bounded within the organism's sensory field.
    Furthermore, it is defined by
    \[
-        R_{\lambda}(r) = \left\langle R_\lambda^x, R_\lambda^y \right\rangle = \langle \lambda \cos r_i, \lambda \sin r_i \rangle
+        R_{\lambda}(r) = \left\langle R_\lambda^x, R_\lambda^y \right\rangle = \langle \lambda \cos r, \lambda \sin r \rangle
    \]
     Where $\lambda$ is the \emph{maximum sensory depth}, i.e. the radius of the sensory field.
 \end{definition}
@@ -231,14 +231,16 @@ some rayline emitted by an organism and an entity in the field, a metric describ
     \[
         |R_\lambda(r)|^2 = \left(R_\lambda^x\right)^2 + \left(R_\lambda^y\right)^2 = \lambda^2
     \]
-    The vector function is thus the parametrization of a circle sector in the range $\left[\theta - \Delta_{\mathbf R}; \theta + \Delta_{\mathbf R}\right]$
-    and the ray set $\mathbf R$ returns a finite collection of vectors with their endpoints located on the sector.
+    The vector function is the parametrization of a circle sector in the range $\left[\theta - \Delta_{\mathbf R}; \theta + \Delta_{\mathbf R}\right]$
+    and the ray set $\mathbf R$ returns a finite collection of vectors with their endpoints located on the arc of the sector.
 \end{remark}
 
 \begin{definition}[Sensory field]
     The sensory field of an organism $O$ is the set of vectors $\mathbf S = \{\vec{s}_1, \ldots, \vec{s}_{\nu_{\mathbf R}}\}$ which is returned by the ray map $R_\lambda$ acting on the
     ray set $\mathbf R$. The \emph{maximum sensory depth} is the parameter $\lambda$ which describes the length of the vectors, i.e. $\forall \vec{s}_i \in \mathbf S: |\vec{s}_i| = \lambda$.
 \end{definition}
+
+Sensory activation occurs when an entity intersects with the line segment formed by a ray. This can be formalized as the predice $\kappa_{r_i}(E)$
 
 \section{Simulation phases}
 For your contemplation (Jun, if you're reading this): I've thought of dividing the simulation into a \emph{foraging phase}, where organisms roam around and collect food.
@@ -352,32 +354,44 @@ of performance improvements as a result of the CBS implementation.
 \newpage
 
 \chapter{Preliminaries}
-\section{Probability theory and statistics}
+\section{Linear Algebra}
+\begin{definition}[Dot product]
+    Let $\mathbf a = \langle a_1, \ldots, a_n \rangle$ and $\mathbf b = \langle b_1, \ldots, b_n$ be $n$-dimensional vectors. The \textbf{dot product} of the two vectors is the sum
+    \[
+        \mathbf a \bullet \mathbf b = \sum_{i = 1}^n a_i b_i
+    \]
+\end{definition}
+\section{Probability and statistics}
+The numeric variable $X \in \mathbb R$ whose value is dependent on some stochastic process is called a \textbf{random variable}. The set $\Omega$ is called the \textbf{sample space} of $X$ and contains all possible outcomes, $\omega$. An \textbf{event} is the subset $E \subseteq \Omega$, where $\Omega$ is the certain event and $\emptyset$ is the impossible event.
+
+\begin{definition}[]
+    A random variable $X$ is the bijective mapping
+    \[
+        X: \Omega \to \mathbb R
+    \]
+    which associates each $\omega \in \Omega$ with some $X(\omega) \in \mathbb R$. When $\Omega$ is a finite set, $X$ is called a \textbf{discrete r.v.} and a \textbf{continuous r.v.} otherwise.
+\end{definition}
+
 \begin{definition}[Probability]
-    Let $\omega$ be some event from the probability space $\Omega$. We represent
-    the probability of the event $\omega$ occuring using the notation $\text{Pr}\{\omega\} = x$
-    where $x \in [0;1]$.
+    The \textbf{probability of an event} E is the function which associates each $E \subseteq \Omega$ with a number $\text{Pr}\{E\} \in (0;1]$ such that
+    \begin{enumerate}
+        \item Pr$\{\Omega\} = 1$ and Pr$\{\emptyset\} = 0$
+        \item $\forall E \subseteq \Omega: \text{Pr}\{E\} \geq 0$
+        \item Let $\{E_n\}_{n \in \mathbb N}$ be an infinite sequents of disjoint events in $\Omega$. Then,
+        \[
+            \text{Pr}\left\{\bigcup_{i = 1}^\infty E_i\right\} = \sum_{i = 1}^\infty \text{Pr}\{E_i\}
+        \]
+    \end{enumerate}
 \end{definition}
 
-\begin{definition}[Random variable]
-    A random variable $X$ is the mapping from the probability space $\Omega$ to the real number
-    line, i.e. $X: \Omega \to \mathbb R$.
-\end{definition}
-
-\begin{remark}
-    An example of a random variable is the varying height of a population, where $\Omega$ is the
-    space of all possible outcomes and the random variable $H$ (height) is for example 180 cm, or 157 cm. 
-\end{remark}
-
-\begin{definition}[Expected value]
-    Let $X$ be a random variable. The expected value is denoted $\mathbb E[X]$.
-\end{definition}
-
-\begin{definition}[Probability distribution]
-    Let $X$ be a random variable. When it follows for example the Poisson distribution, we write
-    $X \sim \text{Poisson}(\lambda)$.
+\begin{definition}[Cumulative distribution function, CDF]
+    Let $X$ be a random variable and $x_0$ be some generic value assumed by $X$. The CDF of $X$ is the function
+    \[
+        F(x_0) \mathrel{:}= \text{Pr}\{X \leq x_0\}
+    \]
 \end{definition}
 
 \section{Neural networks}
+\textbf{Note:} We go about definitions in this section from a graph theoretic standpoint. However, all relevant definitions are explained in detail.
 
 \end{document}
