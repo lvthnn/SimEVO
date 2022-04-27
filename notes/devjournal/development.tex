@@ -87,7 +87,7 @@
                                             \emph{set of chunks} $\mathbf C$ forms a complete partition of $\mathscr E$. \\
       $\mathbf O = \{O_1, \ldots, O_n\}$ & The population, the set of all organisms present within the environment. \\
       $\mathcal P: \mathbf O \to \mathscr E$   & Positional mapping. Returns point representation of an entity's location within $\mathscr E$. Note that $\mathcal P$ is a random variable, which we will
-      discuss in more detail in the runtime optimization section. \\
+      discuss in more detail in the runtime optimization section. \\
     \end{tabularx}
 \end{table}
 
@@ -251,6 +251,18 @@ occurs but rather "off screen" where its just a bunch of calculations really.
 \par On the other hand it might make for some really interesting data if we were to assign individuals genders and they would map their current energy level and the gender of individuals
 in their sensory field and allow for them to reproduce "in the field" lol. Let me know what you think!
 
+Hi Kari - sorry that I only got to have a look at the document now! Those two alternative strategies are similar to what I've been thinking about as well. 
+\par I suppose if we are doing the 'on-screen reproduction' strategy, we'll somehow have to enable agents to switch from \emph{foraging phase} to \emph{reproductive phase};
+perhaps by having two different sets of neural networks? I think it's definitely worth developing but I think in this case we would need to consider a way
+in which we can ensure agents all dying without offsprings in generation 1 due to incompetence in finding partners.
+\par The 'off-screen reproduction' is certainly easier - perhaps we can make an algorithm that randomly picks two individuals with probability of selection
+being scaled according to the amount of food collected over their lifetime? This might be possible if we use an algorithm that's kind of like the following:
+\par 1) Sort the individuals by the amount of food they have collected (or the energy 'left over' at the end of the foraging phase if foraging also involves
+some kind of energy expenditure); 2) Calculate 'boundary values' that divides, for example, [0,1) into sub-intervals proportional to the amount of food
+individuals have collected (e.g. if there are two individuals that each collected 3 and 1 amounts of food, subdivide [0,1) into
+[0,0.75) and [0.75,1) ); 3) Generate a random number between [0,1); 4) Determine which sub-interval the number falls into, and select the corresponding individual
+\par Using this, we should be able to preferrentially select the most 'fittest' individuals and allow them to mate. Once the sub-intervals have been calculated,
+selecting more individuals for additional mating shouldn't be too costly computationally speaking (But let me know what you think!)
 
 
 \section{Runtime optimization}
@@ -319,6 +331,10 @@ which loads the adjacent chunk given that an organisms field of view intersects 
 \par Expanding on this concept, we loosely define the \emph{critical boundary} as the subset of the environment, denoted $\mathcal C_{\mathscr E}$,
 which suffices the condition that the sensory field of any organism contained within it intersect an adjoining chunk, regardless of the organism's position
 and orientation.
+
+\par Maybe we can calculate the critical boundary by using vector calculations for the intersection of chunk boundaries and ray lines?
+Another idea is to have chunks with relatively large dimensions compared to $\lambda$ and then to load three more adjacent chunks depending on
+which \emph{quadrant} of a chunk the individual is in; I will elaborate on this when we have our chat!
 
 \section{Performance comparison}
 In this section we compare the CBS versus non-CBS runtime performance to obtain a metric description
