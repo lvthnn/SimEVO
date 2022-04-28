@@ -10,7 +10,7 @@
 \usepackage{derivative}
 \usepackage{setspace}
 \usepackage{mathrsfs}
-%\usepackage{newtxtext, newtxmath}
+\usepackage{newtxtext, newtxmath}
 \usepackage{tabularx}
 \usepackage{authblk}
 \usepackage{caption}
@@ -284,6 +284,87 @@ and check for the entity type present in the tile. This is not possible in the f
 \subsection{Chunk system}
 In this section, we will be doing a mathematical analysis of the chunk system to see how it will benefit the simulation. To start off, we inspect what fundamental laws apply to this system.
 
+\begin{definition}[Chunk partition]
+    Let $\kappa = \sqrt k$.\footnote{A required simulation paramet
+    er is the chunk number $k = x^2 \in \mathbb N$ which yields the num
+    bers of rows and columns which are exactly equal.}
+    Recall that $\mathscr E = [0;w] \times [0;h]$. The partitionin
+    g of the environment into $k$ chunks consists of constructing the linearly spaced vertex vectors 
+    $\mathbf x = \{x_1, \ldots, x_\kappa \}$ and $\mathbf y = \{y_1, \ldots, y_\kappa \}$.
+    To construct the chunk $C_i$ where $i \in [1;k]$ we must obtain the row-column representation of the index,
+    which is given by $M(i) = \langle x_r, y_c \rangle = \langle \lceil i / \kappa \rceil; i \equiv \kappa \rangle$. 
+    Chunk $C_i$ is then constructed $[x_r; x_{r + 1}] \times [y_c; y_{c + 1}]$.
+\end{definition}
+
+\begin{figure}[ht!]
+        \centering
+        \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt
+        \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+    
+            %uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+    
+            %Shape: Grid [id:dp7174609337256415]
+            \draw  [draw opacity=0][fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ][dash pattern={on 0.84pt off 2.51pt}] (204,18) -- (455,18) -- (455,271) -- (204,271) -- cycle ; \draw  [dash pattern={on 0.84pt off 2.51pt}] (204,18) -- (204,271)(267,18) -- (267,271)(330,18) -- (330,271)(393,18) -- (393,271) ; 
+            \draw  [dash pattern={on 0.84pt off 2.51pt}] (204,18) -- (455,18)(204,81) -- (455,81)(204,144) -- (455,144)(204,207) -- (455,207)(204,270) -- (455,270) ; 
+            \draw  [dash pattern={on 0.84pt off 2.51pt}]  ;
+            %Shape: Rectangle [id:dp7032935088696164]
+            \draw  [line width=2.25]  (204,19) -- (456,19) -- (456,271) -- (204,271) -- cycle ;
+    
+            % Text Node
+            \draw (199,281.4) node [anchor=north west][inner sep=0.75pt]    {$x_{0}$};
+            % Text Node
+            \draw (447,281.4) node [anchor=north west][inner sep=0.75pt]    {$x_{4}$};
+            % Text Node
+            \draw (259,281.4) node [anchor=north west][inner sep=0.75pt]    {$x_{1}$};
+            % Text Node
+            \draw (322,281.4) node [anchor=north west][inner sep=0.75pt]    {$x_{2}$};
+            % Text Node
+            \draw (386,281.4) node [anchor=north west][inner sep=0.75pt]    {$x_{3}$};
+            % Text Node
+            \draw (173,11.4) node [anchor=north west][inner sep=0.75pt]    {$y_{0}$};
+            % Text Node
+            \draw (227,44.4) node [anchor=north west][inner sep=0.75pt]    {$C_{1}$};
+            % Text Node
+            \draw (173,71.4) node [anchor=north west][inner sep=0.75pt]    {$y_{1}$};
+            % Text Node
+            \draw (173,132.4) node [anchor=north west][inner sep=0.75pt]    {$y_{2}$};
+            % Text Node
+            \draw (173,197.4) node [anchor=north west][inner sep=0.75pt]    {$y_{3}$};
+            % Text Node
+            \draw (173,257.4) node [anchor=north west][inner sep=0.75pt]    {$y_{4}$};
+            % Text Node
+            \draw (415,44.4) node [anchor=north west][inner sep=0.75pt]    {$C_{4}$};
+            % Text Node
+            \draw (290,44.4) node [anchor=north west][inner sep=0.75pt]    {$C_{2}$};
+            % Text Node
+            \draw (352,44.4) node [anchor=north west][inner sep=0.75pt]    {$C_{3}$};
+            % Text Node
+            \draw (225,107.4) node [anchor=north west][inner sep=0.75pt]    {$C_{5}$};
+            % Text Node
+            \draw (413,107.4) node [anchor=north west][inner sep=0.75pt]    {$C_{8}$};
+            % Text Node
+            \draw (288,107.4) node [anchor=north west][inner sep=0.75pt]    {$C_{6}$};
+            % Text Node
+            \draw (351,107.4) node [anchor=north west][inner sep=0.75pt]    {$C_{7}$};
+            % Text Node
+            \draw (226,168.4) node [anchor=north west][inner sep=0.75pt]    {$C_{9}$};
+            % Text Node
+            \draw (414,168.4) node [anchor=north west][inner sep=0.75pt]    {$C_{12}$};
+            % Text Node
+            \draw (289,168.4) node [anchor=north west][inner sep=0.75pt]    {$C_{10}$};
+            % Text Node
+            \draw (351,168.4) node [anchor=north west][inner sep=0.75pt]    {$C_{11}$};
+            % Text Node
+            \draw (226,230.4) node [anchor=north west][inner sep=0.75pt]    {$C_{13}$};
+            % Text Node
+            \draw (414,230.4) node [anchor=north west][inner sep=0.75pt]    {$C_{16}$};
+            % Text Node
+            \draw (289,230.4) node [anchor=north west][inner sep=0.75pt]    {$C_{14}$};
+            % Text Node
+            \draw (351,230.4) node [anchor=north west][inner sep=0.75pt]    {$C_{15}$};
+    \end{tikzpicture}
+    \caption{Partitioning of environment into $k = 16$ chunks}
+\end{figure}
 \begin{proposition}
     Let $\mathscr E$ be an environment paritioned into $k$ chunks such that $\mathbf C = \{C_1, \ldots, C_k\}$. The probability of an entity being present in a generic chunk $C_i$ equals $1/k$, i.e.
     \[
@@ -379,11 +460,38 @@ of performance improvements as a result of the CBS implementation.
 \chapter{Preliminaries}
 \section{Linear Algebra}
 \begin{definition}[Dot product]
-    Let $\mathbf a = \langle a_1, \ldots, a_n \rangle$ and $\mathbf b = \langle b_1, \ldots, b_n$ be $n$-dimensional vectors. The \textbf{dot product} of the two vectors is the sum
+    Let $\mathbf a = \langle a_1, \ldots, a_n \rangle$ and $\mathbf b = \langle b_1, \ldots, b_n \rangle$ be $n$-dimensional vectors. The \textbf{dot product} of the two vectors is the sum
     \[
         \mathbf a \bullet \mathbf b = \sum_{i = 1}^n a_i b_i
     \]
+    The angle $\theta$ between two vectors is related to their dot product:
+    \[
+        \mathbf a \bullet \mathbf b = |\mathbf a||\mathbf b|\cos(\theta)
+    \]
+    That is to say,
+    \[
+        \theta = \arccos\left(\frac{\mathbf a \bullet \mathbf b}{|\mathbf a||\mathbf b|}\right)
+    \]
 \end{definition}
+
+\renewcommand{\arraystretch}{1}
+\begin{definition}[Cross product]
+    The cross product of two vectors $\mathbf a, \mathbf b \in \mathbb R^3$ 
+    is denoted $\mathbf a \times \mathbf b$ and defined
+    \[
+        \mathbf a \times \mathbf b = \begin{bmatrix}
+            \mathbf i & \mathbf j & \mathbf k \\
+            a_1       & a_2       & a_3       \\
+            b_1       & b_2       & b_3
+        \end{bmatrix} =
+        (a_2b_3 - a_3b_2)\mathbf i + (a_3b_1 - a_1b_3)\mathbf j + (a_1b_2 - a_2b_1)\mathbf k
+    \]
+\end{definition}
+The resulting vector of the vector product $\mathbf a \times \mathbf b$ is normal to both $\mathbf a$ and $\mathbf b$,
+and thus the following rule applies:
+\[
+    \mathbf a \times \mathbf b = |\mathbf a||\mathbf b| \sin(\theta) \hat{\mathbf n}
+\]
 \section{Probability and statistics}
 The numeric variable $X \in \mathbb R$ whose value is dependent on some stochastic process is called a \textbf{random variable}. The set $\Omega$ is called the \textbf{sample space} of $X$ and contains all possible outcomes, $\omega$. An \textbf{event} is the subset $E \subseteq \Omega$, where $\Omega$ is the certain event and $\emptyset$ is the impossible event.
 
