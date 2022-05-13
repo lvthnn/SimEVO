@@ -10,11 +10,15 @@
 \usepackage{derivative}
 \usepackage{setspace}
 \usepackage{mathrsfs}
-\usepackage{newtxtext, newtxmath}
+% \usepackage{newtxtext, newtxmath}
 \usepackage{tabularx}
 \usepackage{authblk}
 \usepackage{caption}
 \usepackage[most]{tcolorbox}
+\renewcommand\qedsymbol{$\blacksquare$}
+\newcommand\placeqed{\nobreak\enspace$\blacksquare$}
+\renewcommand\qedsymbol{}
+
 
 \usepackage{algorithm}
 \usepackage{algpseudocodex}
@@ -141,7 +145,7 @@ from its implementation as it only adds a level of complexity to the model desig
 \par Contained within the environment are \emph{entities} which we can think of as actors within the simulation. The two types that occur
 in this model are \emph{organisms} and \emph{food}. Again, a simple intuitive definition is that the organism is an individual of a species
 present within the environment and nutrition is the foodstuffs which it consumes to gain energy and thus survive.
-\par Entities can be divided into two types: \emph{organisms} and \emph{food}. What follows is simple: organisms are motile, can sense their surroundings
+\par Entities can be divided into two types: \emph{organisms} and \emph{food}. Organisms are motile, can sense their surroundings
 and consume food to gain energy. On the other hand, food has none of these qualities. We represent an entity as the object $E$, while organisms are denoted
 $O$ and food by $F$.
 \begin{figure}
@@ -292,7 +296,7 @@ In this section, we will be doing a mathematical analysis of the chunk system to
     g of the environment into $k$ chunks consists of constructing the linearly spaced vertex vectors 
     $\mathbf x = \{x_1, \ldots, x_\kappa \}$ and $\mathbf y = \{y_1, \ldots, y_\kappa \}$.
     To construct the chunk $C_i$ where $i \in [1;k]$ we must obtain the row-column representation of the index,
-    which is given by $M(i) = \langle x_r, y_c \rangle = \langle \lceil i / \kappa \rceil; i \equiv \kappa \rangle$. 
+    which is given by $M(i) = \langle x_r, y_c \rangle = \langle \lceil i / \kappa \rceil; i \text{ mod } \kappa \rangle$. 
     Chunk $C_i$ is then constructed $[x_r; x_{r + 1}] \times [y_c; y_{c + 1}]$.
 \end{definition}
 
@@ -363,7 +367,7 @@ In this section, we will be doing a mathematical analysis of the chunk system to
             % Text Node
             \draw (351,230.4) node [anchor=north west][inner sep=0.75pt]    {$C_{15}$};
     \end{tikzpicture}
-    \caption{Partitioning of environment into $k = 16$ chunks}
+    \caption{Partition of environment into $k = 16$ chunks}
 \end{figure}
 \begin{proposition}
     Let $\mathscr E$ be an environment paritioned into $k$ chunks such that $\mathbf C = \{C_1, \ldots, C_k\}$. The probability of an entity being present in a generic chunk $C_i$ equals $1/k$, i.e.
@@ -385,7 +389,7 @@ In this section, we will be doing a mathematical analysis of the chunk system to
                                &= \frac{\text{area}(C_i)}{\text{area}(\mathscr E)} \\
                                &= \frac{1}{k}
     \end{align*}
-    The result of the calculations above are immediate of the definition of the area of the chunks, which is derived in (\textasteriskcentered).
+    The result of the calculations above are immediate of the definition of the area of the chunks, which is derived in (\textasteriskcentered). \placeqed
 \end{proof}
 
 \begin{definition}[Chunk load]
